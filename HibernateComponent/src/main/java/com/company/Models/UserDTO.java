@@ -23,7 +23,7 @@ public class UserDTO {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     private List<IssueDTO> issuesOfThisUser;
 
 

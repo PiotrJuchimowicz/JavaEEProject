@@ -21,7 +21,7 @@ public class BookDTO {
     private rentalTime rentalTime;
     private int numberOfCopies;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     private List<IssueDTO> issuesOfThisBook;
 
 
