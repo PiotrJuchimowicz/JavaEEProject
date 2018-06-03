@@ -25,9 +25,7 @@ public class BookDTO {
     private List<IssueDTO> issuesOfThisBook;
 
 
-    public BookDTO() {
-    }
-
+    public BookDTO() { }
 
     public BookDTO(String title, String author, String category, BookDTO.rentalTime rentalTime, int numberOfCopies, List<IssueDTO> issuesOfThisBook) {
         this.title = title;
@@ -49,6 +47,9 @@ public class BookDTO {
     public long getIdBook() {
         return idBook;
     }
+
+    // Id typu string jest potrzebne do uzyskania adresu url (żeby z widoku books-get-all przejść do widoku book-get-one)
+    public String idBookToString() { return String.valueOf(idBook); }
 
     public void setIdBook(long id_book) {
         this.idBook = id_book;

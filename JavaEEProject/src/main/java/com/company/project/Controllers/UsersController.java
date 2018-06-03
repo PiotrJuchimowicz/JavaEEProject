@@ -1,18 +1,17 @@
 package com.company.project.Controllers;
 
 import com.company.project.JpaDAO.UserJpaDAO;
-import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/users")
 public class UsersController {
 
@@ -54,21 +53,18 @@ public class UsersController {
 
 
     @RequestMapping("/findbyid/{id}")
-    @ResponseBody
-    public UserDTO getById(@PathVariable long id, Model theModel){
+    public String getById(@PathVariable long id, Model theModel){
         UserDTO user = userJpaDAO.get(id);
-        theModel.addAttribute(user);
-
-        return user;
+        theModel.addAttribute("user", user);
+        return "user-get-one";
     }
 
     @RequestMapping("/findall")
-    @ResponseBody
-    public List<UserDTO> getAll(Model theModel){
+    public String getAll(Model theModel){
         List<UserDTO> list = userJpaDAO.findAllUsers();
-        theModel.addAllAttributes(list);
+        theModel.addAttribute("users", list);
 
-        return list;
+        return "users-get-all";
     }
 
 
