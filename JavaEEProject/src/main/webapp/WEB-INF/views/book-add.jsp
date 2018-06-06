@@ -9,6 +9,10 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<style>
+    .error {color: red;}
+</style>
+
 <head>
     <title>Nowa książka</title>
     <%--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>--%>
@@ -21,7 +25,9 @@
 
     <form:form method="POST" modelAttribute="book">
         <label for="titleInput">Tytuł: </label>
-        <form:input path="title" id="titleInput" /><br/><br/>
+        <form:input path="title" id="titleInput" />
+        <form:errors path="title" id="titleInput" cssClass="error"/>
+        <br/><br/>
 
         <label for="authorInput">Autor: </label>
         <form:input path="author" id="authorInput" /><br/><br/>
