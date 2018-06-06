@@ -2,8 +2,11 @@ package com.company.project.Controllers;
 
 
 import com.company.project.HibernateDAO.BookHibernateDAO;
+import com.company.project.HibernateDAO.IssueHibernateDAO;
 import com.company.project.HibernateDAO.UserHibernateDAO;
 import com.company.project.JpaDAO.BookJpaDAO;
+import com.company.project.JpaDAO.IssueJpaDAO;
+import com.company.project.JpaDAO.UserJpaDAO;
 import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.awt.print.Book;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -106,6 +110,35 @@ public class BooksController {
         theModel.addAttribute("books", books);
         return "book-get-title";
 
+    }
+
+    @RequestMapping("/{id}/reservation")
+    public String bookReservation(@PathVariable String id){
+
+        UserJpaDAO userJpaDAO = new UserHibernateDAO(); //nie wiem czy nie trzeba wstrzyknąć
+        IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
+
+        BookDTO book = bookJpaDAO.get(Long.parseLong(id));
+        UserDTO user = userJpaDAO.get(1); //jeszcze tego nie umiem pobrać ale ogarne
+
+        IssueDTO issueDTO = new IssueDTO(book,user,LocalDateTime.now(),null , null);
+        issueJpaDAO.add(issueDTO);
+
+        return "book-reservation";
+    }
+
+    @RequestMapping("/{id}/hire")
+    public String bookHire(@PathVariable String id){
+
+        //trzeba sprawdzić czy książka była wcześniej zarezerwowana
+        //najlepiej poszukać jakoś po id
+        //potrzebna metoda sprawdzająca czy osoba wypożyczająca daną książkę
+        //wcześniej ją zarezerwowała
+
+        //czyli czy istnieje już issue tej książki dla tej osoby z reservationDate not null
+
+
+        return "book-hire";
     }
 
 
