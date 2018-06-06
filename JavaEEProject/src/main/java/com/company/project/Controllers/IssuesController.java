@@ -5,6 +5,7 @@ package com.company.project.Controllers;
 import com.company.project.JpaDAO.IssueJpaDAO;
 import com.company.project.Models.IssueDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/issues")
 public class IssuesController {
 
@@ -30,23 +31,22 @@ public class IssuesController {
 
     @RequestMapping("/findbyid/{id}")
     @ResponseBody
-    public IssueDTO getById(@PathVariable long id, Model theModel){
+    public void getById(@PathVariable long id, Model theModel){
 
         IssueDTO issue = issueJpaDAO.get(id);
         theModel.addAttribute(issue);
-        System.out.println(issue);
 
-        return issue;
+        //return issue;
     }
 
     @RequestMapping("/findall")
     @ResponseBody
-    public List<IssueDTO> getAll(Model theModel){
+    public void getAll(Model theModel){
 
         List<IssueDTO> list = issueJpaDAO.findAllIssues();
         theModel.addAllAttributes(list);
         System.out.println("lista: " + list);
-        return list;
+        //return list;
 
     }
 

@@ -1,100 +1,110 @@
 package com.company.project.Controllers;
 
 
+import com.company.project.HibernateDAO.BookHibernateDAO;
+import com.company.project.HibernateDAO.UserHibernateDAO;
 import com.company.project.JpaDAO.BookJpaDAO;
 import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
+import com.company.project.Models.UserDTO;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.awt.print.Book;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/books")
 public class BooksController {
 
     @Autowired
     private BookJpaDAO bookJpaDAO;
 
-
-
+    @RequestMapping("/removeconfirm/{id}") // widok pośredni między szczegółami książki a usunięciem
+    public String removeConfirm(@PathVariable String id, Model theModel) {
+        BookDTO book = bookJpaDAO.get(Long.parseLong(id));
+        theModel.addAttribute("book", book);
+        return "book-remove-confirm";
+    }
 
     @RequestMapping("/remove/{id}")
-    public void removeBook(@PathVariable long id){
-        bookJpaDAO.remove(bookJpaDAO.get(id));
+    public String removeBook(@PathVariable String id){
+        bookJpaDAO.remove(bookJpaDAO.get(Long.parseLong(id)));
+        return "redirect:/books/getall";
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public void addBook(HttpServletRequest request , Model theModel) {
+    @ModelAttribute("rentalTimes")
+    public BookDTO.rentalTime[] frequencies() {
+        return BookDTO.rentalTime.values();
+    }
 
-        try {
-            String title = request.getParameter("bookTitle");
-            String author = request.getParameter("author");
-            String category = request.getParameter("category");
-            String rent = request.getParameter("rentalTime");
-            BookDTO.rentalTime rentalTime = BookDTO.rentalTime.valueOf(rent); // przy tym pewnie bedzie wyjatek
-            Integer numberOfCopies = Integer.parseInt(request.getParameter("numberOfCopies"));
-            List<IssueDTO> list = null;
+    @RequestMapping(value="/add", method=RequestMethod.GET)
+    public String loadAddPage(Model m) {
+        BookDTO book = new BookDTO();
+        m.addAttribute("book", book);
+        return "book-add";
+    }
 
-            BookDTO book = new BookDTO(title, author, category, rentalTime, numberOfCopies, list);
-            bookJpaDAO.add(book);
-            theModel.addAttribute(book);
+    @RequestMapping(value="/add", method=RequestMethod.POST)
+    public String submitAdd (@Valid BookDTO book, Model model, BindingResult bindingResult ){
+        BookHibernateDAO bookDAO = new BookHibernateDAO();
+        bookDAO.add(book);
+        //m.addAttribute("message", "Successfully saved book: " + book.toString());
 
+        if(bindingResult.hasErrors())
+        {
+            return "error";
 
-        } catch(Exception e){
-            //jakas obsluga
+        }else {
+            return "confirmation";
         }
-
     }
 
-
-    //zwraca liste wszystkich ksiazek
-    @RequestMapping("/getall")
-    @ResponseBody
-    public List<BookDTO> getAll(Model theModel){
+    @RequestMapping(value="/getall")
+    public String getAll(Model theModel) {
 
         List<BookDTO> list = bookJpaDAO.findAllBooks();
-        theModel.addAttribute(list);
+        theModel.addAttribute("books", list);
+        return "books-get-all";
 
-        return list;
     }
 
     @RequestMapping("/findbyid/{id}")
-    @ResponseBody
-    public BookDTO getById(@PathVariable long id, Model theModel){
-
-       BookDTO book = bookJpaDAO.get(id);
-       theModel.addAttribute(book);
-       return book;
+    public String getById(@PathVariable String id, Model theModel){
+       BookDTO book = bookJpaDAO.get(Long.parseLong(id));
+       theModel.addAttribute("book", book);
+       return "book-get-one";
 
     }
 
     @RequestMapping("/category/{category}")
-    @ResponseBody
-    public List<BookDTO> getByCategory(@PathVariable String category, Model theModel){
+    public String getByCategory(@PathVariable String category, Model theModel){
         List<BookDTO> books = bookJpaDAO.findByCategory(category);
-        theModel.addAllAttributes(books);
-        return books;
+        theModel.addAttribute("books", books);
+        return "book-get-category";
 
     }
 
     @RequestMapping("/author/{author}")
-    @ResponseBody
-    public List<BookDTO> getByAuthor(@PathVariable String author, Model theModel){
+    public String getByAuthor(@PathVariable String author, Model theModel){
         List<BookDTO> books = bookJpaDAO.findByAuthor(author);
-        theModel.addAllAttributes(books);
-        return books;
+        theModel.addAttribute("books", books);
+        return "book-get-author";
 
     }
 
     @RequestMapping("/title/{title}")
-    @ResponseBody
-    public List<BookDTO> getByTitle(@PathVariable String title, Model theModel){
+    public String getByTitle(@PathVariable String title, Model theModel){
         List<BookDTO> books = bookJpaDAO.findByTitle(title);
-        theModel.addAllAttributes(books);
-        return books;
+        theModel.addAttribute("books", books);
+        return "book-get-title";
 
     }
 

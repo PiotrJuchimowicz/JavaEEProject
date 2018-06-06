@@ -1,6 +1,11 @@
 package com.company.project.Models;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.NumberFormat;
+
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -16,7 +21,10 @@ public class BookDTO {
 
     }
 
-    private String title, author, category;
+   //adnotacje tu będą jeszcze
+    private String title;
+    private String author;
+    private String category;
     @Enumerated(EnumType.STRING)
     private rentalTime rentalTime;
     private int numberOfCopies;
@@ -25,9 +33,7 @@ public class BookDTO {
     private List<IssueDTO> issuesOfThisBook;
 
 
-    public BookDTO() {
-    }
-
+    public BookDTO() { }
 
     public BookDTO(String title, String author, String category, BookDTO.rentalTime rentalTime, int numberOfCopies, List<IssueDTO> issuesOfThisBook) {
         this.title = title;
@@ -49,6 +55,9 @@ public class BookDTO {
     public long getIdBook() {
         return idBook;
     }
+
+    // Id typu string jest potrzebne do uzyskania adresu url (żeby z widoku books-get-all przejść do widoku book-get-one)
+    public String idBookToString() { return String.valueOf(idBook); }
 
     public void setIdBook(long id_book) {
         this.idBook = id_book;
