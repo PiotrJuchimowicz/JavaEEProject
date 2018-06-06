@@ -10,6 +10,7 @@ import com.company.Models.BookDTO;
 import com.company.Models.IssueDTO;
 import com.company.Models.UserDTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 //W warstwie wyzszej trzeba bedzie przetwarzac haslo na hasz oraz
@@ -17,22 +18,18 @@ import java.util.List;
 //Do tej warstwy trafia obiekt który jest już gotowy do zapisu w bazie
 public class TestMain {
     public static void main(String[] args) {
+    BookJpaDAO bookJpaDAO = new BookHibernateDAO();
+    IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
+    UserJpaDAO userJpaDAO = new UserHibernateDAO();
 
-        BookDTO bookDTO = new BookDTO("1", "2", "3", BookDTO.rentalTime.SEVENDAYS, 10, null);
-        UserDTO userDTO = new UserDTO("1", "2", "3", 1234, 12.00, UserDTO.Role.CLIENT, null);
+      BookDTO bookDTO =  bookJpaDAO.get(1);
+        System.out.println(bookDTO);
+        UserDTO userDTO = userJpaDAO.get(1);
+        System.out.println(userDTO);
 
-        IssueDTO issueDTO = new IssueDTO(bookDTO, userDTO, null, null, null);
-
-        BookJpaDAO bookJpaDAO = new BookHibernateDAO();
-        UserJpaDAO userJpaDAO = new UserHibernateDAO();
-        IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
-        bookJpaDAO.add(bookDTO);
-        userJpaDAO.add(userDTO);
+        IssueDTO issueDTO = new IssueDTO(bookDTO,userDTO,null,null, LocalDateTime.now());
         issueJpaDAO.add(issueDTO);
 
-        List<IssueDTO> list = issueJpaDAO.findIssuesOfThisBook(1);
-
-        System.out.println(list.get(0).toString());
 
 
     }

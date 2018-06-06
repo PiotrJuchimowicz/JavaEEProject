@@ -23,5 +23,9 @@ public interface BookJpaDAO {
 
     List<BookDTO> findByTitle(String title);
 
+    //szukanie po nazwisku,imieniu autora
+    //szukanie po czesci tytulu ksiazki
+    //enum to string
+
 
 }
