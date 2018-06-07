@@ -27,5 +27,4 @@ public interface BookJpaDAO {
     //szukanie po czesci tytulu ksiazki
     //enum to string
 
-
 }

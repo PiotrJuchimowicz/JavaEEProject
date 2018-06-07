@@ -3,7 +3,6 @@ package com.company.project.Controllers;
 import com.company.project.HibernateDAO.BookHibernateDAO;
 import com.company.project.HibernateDAO.UserHibernateDAO;
 import com.company.project.JpaDAO.UserJpaDAO;
-import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
