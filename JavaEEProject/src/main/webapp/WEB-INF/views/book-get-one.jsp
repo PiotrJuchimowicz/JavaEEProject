@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <meta charset="utf-8">
     <title>Książka nr ${book.getIdBook()}</title>
     <style>
         a:link, a:visited {
@@ -16,7 +17,6 @@
             text-decoration: underline;
             cursor: pointer;
         }
-
         a:link:active, a:visited:active {
             color: black;
         }

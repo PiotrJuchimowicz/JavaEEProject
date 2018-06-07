@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+
     <title>Książki</title>
     <style>
         a:link, a:visited {
@@ -25,13 +26,22 @@
 </head>
 <body>
     <h1>Lista zasobów biblioteki</h1>
-
-    <%--<a href="<c:url value='views/book-add.jsp'>">Dodaj nową książkę </a> <br>--%>
+    <hr><hr>
+    <a href="<c:url value='/books/add'/>">Dodaj nową książkę</a> <br>
+    <hr><hr>
 
     <c:forEach items = "${books}" var="b">
-        <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}"> ${b.getIdBook()}: ${b.getTitle()} - ${b.getAuthor()}</a>  <br>
+        <h2>${b.getIdBook()}: ${b.getTitle()} - ${b.getAuthor()}</h2>
         ${b.getCategory()}<br>
+
+        <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}">Przejdź do strony książki</a>  <br>
+
+        <c:if test="${b.getNumberOfCopies() > 0}">
+            <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}"> TU BĘDZIE REZERWOWANIE</a>  <br>
+        </c:if>
+
         <hr>
     </c:forEach>
+
 </body>
 </html>

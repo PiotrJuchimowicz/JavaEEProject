@@ -7,6 +7,7 @@ import com.company.project.JpaDAO.BookJpaDAO;
 import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
+import org.apache.taglibs.standard.tag.common.fmt.RequestEncodingSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,9 +56,25 @@ public class BooksController {
     @RequestMapping(value="/add", method=RequestMethod.POST)
     public String submitAdd( BookDTO book, Model m) {
         BookHibernateDAO bdao = new BookHibernateDAO();
-        bdao.add(book);
-        m.addAttribute("message", "Successfully saved book: " + book.toString());
-        return "book-add";
+
+        // tu sprawdzenie czy wszystko ok z książką
+        int ifSthWrong = 0; //inkrementacja jeżeli coś jest źle
+        if(book.getAuthor().length()<3) ifSthWrong++;
+        if(book.getTitle().length()<3) ifSthWrong++;
+        if(book.getCategory().length()<3) ifSthWrong++;
+        if(book.getRentalTime() != BookDTO.rentalTime.ONEDAY
+                && book.getRentalTime() != BookDTO.rentalTime.SEVENDAYS
+                && book.getRentalTime() != BookDTO.rentalTime.THREEMONTHS) ifSthWrong++;
+        if(book.getNumberOfCopies() <= 0) ifSthWrong++;
+
+        //jeśli tak to
+        if( ifSthWrong == 0 ) {
+            bdao.add(book);
+            m.addAttribute("message", "Dodanie książki przebiegło pomyślnie.");
+        }
+        //jeśli nie to
+        else m.addAttribute("message", "Dodanie książki nie udało się.");
+        return "book-add-response";
     }
 
     /*@RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -84,11 +101,9 @@ public class BooksController {
 
     @RequestMapping(value="/getall")
     public String getAll(Model theModel) {
-
         List<BookDTO> list = bookJpaDAO.findAllBooks();
         theModel.addAttribute("books", list);
         return "books-get-all";
-
     }
 
     @RequestMapping("/findbyid/{id}")
@@ -96,7 +111,6 @@ public class BooksController {
        BookDTO book = bookJpaDAO.get(Long.parseLong(id));
        theModel.addAttribute("book", book);
        return "book-get-one";
-
     }
 
     @RequestMapping("/category/{category}")
@@ -105,7 +119,6 @@ public class BooksController {
         List<BookDTO> books = bookJpaDAO.findByCategory(category);
         theModel.addAllAttributes(books);
         return books;
-
     }
 
     @RequestMapping("/author/{author}")
@@ -114,7 +127,6 @@ public class BooksController {
         List<BookDTO> books = bookJpaDAO.findByAuthor(author);
         theModel.addAllAttributes(books);
         return books;
-
     }
 
     @RequestMapping("/title/{title}")
@@ -123,6 +135,5 @@ public class BooksController {
         List<BookDTO> books = bookJpaDAO.findByTitle(title);
         theModel.addAllAttributes(books);
         return books;
-
     }
 }

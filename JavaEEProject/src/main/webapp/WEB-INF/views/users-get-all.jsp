@@ -14,7 +14,7 @@
 <body>
 <h2>Lista użytkowników serwisu</h2>
 <c:forEach items = "${users}" var="u">
-    ${u.getId()}<br>
+    ${u.getIdUser()}<br>
     ${u.getName()}<br>
     ${u.getSurname()}<br>
     ${b.getEmail()}<br>
