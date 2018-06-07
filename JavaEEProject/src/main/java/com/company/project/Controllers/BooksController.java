@@ -77,27 +77,6 @@ public class BooksController {
         return "book-add-response";
     }
 
-    /*@RequestMapping(value = "/add", method = RequestMethod.GET)
-    public void addBook(HttpServletRequest request , Model theModel) {
-
-        try {
-            String title = request.getParameter("bookTitle");
-            String author = request.getParameter("author");
-            String category = request.getParameter("category");
-            String rent = request.getParameter("rentalTime");
-            BookDTO.rentalTime rentalTime = BookDTO.rentalTime.valueOf(rent); // przy tym pewnie bedzie wyjatek
-            Integer numberOfCopies = Integer.parseInt(request.getParameter("numberOfCopies"));
-            List<IssueDTO> list = null;
-
-            BookDTO book = new BookDTO(title, author, category, rentalTime, numberOfCopies, list);
-            bookJpaDAO.add(book);
-            theModel.addAttribute(book);
-
-
-        } catch(Exception e){
-            //jakas obsluga
-        }
-    }*/
 
     @RequestMapping(value="/getall")
     public String getAll(Model theModel) {
