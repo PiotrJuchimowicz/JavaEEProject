@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.awt.print.Book;
+import java.lang.String;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -107,17 +108,21 @@ public class BooksController {
     }
 
     @RequestMapping("/findbyid/{id}")
-    public String getById(@PathVariable String id, Model theModel){
-       BookDTO book = bookJpaDAO.get(Long.parseLong(id));
-       theModel.addAttribute("book", book);
-       return "book-get-one";
+    public String getById(@PathVariable String id, Model theModel) {
+        BookDTO book = bookJpaDAO.get(Long.parseLong(id));
+        theModel.addAttribute("book", book);
+        return "book-get-one";
+    }
 
+       /*
     @RequestMapping("/category/{category}")
     public String getByCategory(@PathVariable String category, Model theModel){
         List<BookDTO> books = bookJpaDAO.findByCategory(category);
         theModel.addAttribute("books", books);
         return "book-get-category";
     }
+    */
+
 
     @RequestMapping("/author/{author}")
     public String getByAuthor(@PathVariable String author, Model theModel){

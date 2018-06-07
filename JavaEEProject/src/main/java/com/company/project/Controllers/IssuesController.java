@@ -52,11 +52,11 @@ public class IssuesController {
     public void getAll(Model theModel){
 
         List<IssueDTO> lista = null;
-        BookDTO book = new BookDTO("pokolenie black red white", "cd", "dramat", BookDTO.rentalTime.ONEDAY, 3, lista);
+        BookDTO book = new BookDTO("pokolenie black red white", "cd", "dramat", BookDTO.rentalTime.ONEDAY, 3);
         BookHibernateDAO bdao = new BookHibernateDAO();
         bdao.add(book);
 
-        UserDTO user = new UserDTO("ania", "dssds", "dsds@gmail.com", 121, 2.0, UserDTO.Role.CLIENT, lista);
+        UserDTO user = new UserDTO("ania", "dssds", "dsds@gmail.com", 121, 2.0, UserDTO.Role.CLIENT);
         UserHibernateDAO udao = new UserHibernateDAO();
         udao.add(user);
 

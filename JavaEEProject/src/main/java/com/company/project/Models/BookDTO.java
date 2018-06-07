@@ -36,7 +36,7 @@ public class BookDTO {
     private int numberOfCopies;
 
     //domyslnie pusta lista powiazana z dana ksiazka(do ktorej potem bedzie mozna dodawac)
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
     private List<IssueDTO> issuesOfThisBook  = new LinkedList<>();
 
 
@@ -49,6 +49,11 @@ public class BookDTO {
         this.rentalTime = rentalTime;
         this.numberOfCopies = numberOfCopies;
 
+    }
+    //Dodaje do aktualnej listy zamowien kolejne zamowienie
+    public void addIssue(IssueDTO issueDTO)
+    {
+        issuesOfThisBook.add(issueDTO);
     }
 
     public List<IssueDTO> getIssuesOfThisBook() {
@@ -153,7 +158,7 @@ public class BookDTO {
         if (!(this.title.equals(bookDTO.title)))
             return false;
 
-        //zatem ksiazki maja listy swoich zamowien :
+
 
 
         //jesli obie maja listy sprawdzamy czy sa rowne(musza miec taka sama dlugosc i
