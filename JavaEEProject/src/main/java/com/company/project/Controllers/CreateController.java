@@ -24,7 +24,7 @@ public class CreateController {
     public void createBook(){
 
         BookJpaDAO bookJpaDAO = new BookHibernateDAO();
-        BookDTO book = new BookDTO("Tytul","Iwona", "kryminal", BookDTO.rentalTime.SEVENDAYS,3, null);
+        BookDTO book = new BookDTO("Tytul","Iwona", "kryminal", BookDTO.rentalTime.SEVENDAYS,3);
 
         bookJpaDAO.add(book);
     }
@@ -33,7 +33,7 @@ public class CreateController {
     public void createUser(){
 
         UserJpaDAO userJpaDAO = new UserHibernateDAO();
-        UserDTO user = new UserDTO("Iwona", "Strubczewska", "iwona.strubczewska@gmail.com", 100320, 0, UserDTO.Role.CLIENT, null);
+        UserDTO user = new UserDTO("Iwona", "Strubczewska", "iwona.strubczewska@gmail.com", 100320, 0, UserDTO.Role.CLIENT);
         userJpaDAO.add(user);
     }
 

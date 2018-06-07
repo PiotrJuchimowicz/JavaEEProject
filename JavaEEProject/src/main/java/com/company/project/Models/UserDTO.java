@@ -1,6 +1,7 @@
 package com.company.project.Models;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -23,21 +24,21 @@ public class UserDTO {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    //domyslnie pusta lista powiazana z danym userem do ktorej potem bedzie mozna dodawac
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<IssueDTO> issuesOfThisUser;
+    private List<IssueDTO> issuesOfThisUser = new LinkedList<>();
 
 
     public UserDTO() {
     }
 
-    public UserDTO(String name, String surname, String email, int password, double payment, Role role, List<IssueDTO> issuesOfThisUser) {
+    public UserDTO(String name, String surname, String email, int password, double payment, Role role) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.payment = payment;
         this.role = role;
-        this.issuesOfThisUser = issuesOfThisUser;
     }
 
     public List<IssueDTO> getIssuesOfThisUser() {

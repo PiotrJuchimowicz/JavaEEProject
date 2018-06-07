@@ -11,6 +11,8 @@ import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
 
+import java.awt.print.Book;
+import java.util.LinkedList;
 import java.util.List;
 
 //W warstwie wyzszej trzeba bedzie przetwarzac haslo na hasz oraz
@@ -19,21 +21,41 @@ import java.util.List;
 public class TestMain {
     public static void main(String[] args) {
 
-        BookDTO bookDTO = new BookDTO("1", "2", "3", BookDTO.rentalTime.SEVENDAYS, 10, null);
-        UserDTO userDTO = new UserDTO("1", "2", "3", 1234, 12.00, UserDTO.Role.CLIENT, null);
+        BookJpaDAO bookDao = new BookHibernateDAO();
+        BookDTO b1 = new BookDTO("title1","author1","category1", BookDTO.rentalTime.SEVENDAYS,10);
+        BookDTO b2 = new BookDTO("title2","author1","category2", BookDTO.rentalTime.ONEDAY,2);
+        BookDTO b3 = new BookDTO("title3","author1","category3", BookDTO.rentalTime.THREEMONTHS,1);
+        BookDTO b4 = new BookDTO("title4","author2","category4", BookDTO.rentalTime.SEVENDAYS,0);
 
-        IssueDTO issueDTO = new IssueDTO(bookDTO, userDTO, null, null, null);
+        List<BookDTO> dtoList = new LinkedList<>();
+        dtoList.add(b1);
+        dtoList.add(b2);
+        dtoList.add(b3);
 
-        BookJpaDAO bookJpaDAO = (BookJpaDAO) new BookHibernateDAO();
-        UserJpaDAO userJpaDAO = (UserJpaDAO) new UserHibernateDAO();
-        IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
-        bookJpaDAO.add(bookDTO);
-        userJpaDAO.add(userDTO);
-        issueJpaDAO.add(issueDTO);
 
-        List<IssueDTO> list = issueJpaDAO.findIssuesOfThisBook(1);
 
-        System.out.println(list.get(0).toString());
+
+        bookDao.add(b1);
+        bookDao.add(b2);
+        bookDao.add(b3);
+        bookDao.add(b4);
+
+        System.out.println(dtoList);
+
+
+
+        List<BookDTO> result= bookDao.findByAuthor("author1");
+        System.out.println(result);
+
+
+
+
+
+
+
+
+
+
 
 
     }

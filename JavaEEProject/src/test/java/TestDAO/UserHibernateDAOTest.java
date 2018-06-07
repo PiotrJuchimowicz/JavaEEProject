@@ -1,38 +1,44 @@
 package TestDAO;
 
+import com.company.project.HibernateDAO.UserHibernateDAO;
+import com.company.project.JpaDAO.UserJpaDAO;
+import com.company.project.Models.BookDTO;
+import com.company.project.Models.UserDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 //TODO
 class UserHibernateDAOTest {
 
-    @BeforeEach
-    void setUp() {
+
+    @Test
+    void CRUDTest() {
+        UserDTO userDTO;
+        UserJpaDAO userDao = new UserHibernateDAO();
+        String name = "anyName";
+        String surname="anySurname";
+        String email="anyEmail";
+        int password=1234;
+        double payment=1000;
+        UserDTO.Role role= UserDTO.Role.ADMIN;
+        userDTO= new
+
     }
 
-    @AfterEach
-    void tearDown() {
+    //Sprawdza czy taki  klient wypożyczył taką książkę
+    @Test
+    boolean didHeBorrowThatBook(UserDTO userDTO, BookDTO bookDTO) {
+
     }
 
     @Test
-    void add() {
+    List<UserDTO> findAllUsers() {
+
     }
 
-    @Test
-    void get() {
-    }
-
-    @Test
-    void update() {
-    }
-
-    @Test
-    void remove() {
-    }
-
-    @Test
-    void findAllUsers() {
-    }
 }

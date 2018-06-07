@@ -34,11 +34,11 @@ public class IssueDTO {
         this.returnDate = returnDate;
     }
 
-    public long getIdReservation() {
+    public long getIdIssue() {
         return idIssue;
     }
 
-    public void setIdReservation(long idIssue) {
+    public void setIdIssue(long idIssue) {
         this.idIssue = idIssue;
     }
 

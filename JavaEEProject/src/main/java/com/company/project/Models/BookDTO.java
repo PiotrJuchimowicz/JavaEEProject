@@ -2,11 +2,14 @@ package com.company.project.Models;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.NumberFormat;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -32,19 +35,20 @@ public class BookDTO {
     private rentalTime rentalTime;
     private int numberOfCopies;
 
+    //domyslnie pusta lista powiazana z dana ksiazka(do ktorej potem bedzie mozna dodawac)
     @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private List<IssueDTO> issuesOfThisBook;
+    private List<IssueDTO> issuesOfThisBook  = new LinkedList<>();
 
 
     public BookDTO() { }
 
-    public BookDTO(String title, String author, String category, BookDTO.rentalTime rentalTime, int numberOfCopies, List<IssueDTO> issuesOfThisBook) {
+    public BookDTO(String title, String author, String category, BookDTO.rentalTime rentalTime, int numberOfCopies) {
         this.title = title;
         this.author = author;
         this.category = category;
         this.rentalTime = rentalTime;
         this.numberOfCopies = numberOfCopies;
-        this.issuesOfThisBook = issuesOfThisBook;
+
     }
 
     public List<IssueDTO> getIssuesOfThisBook() {
@@ -118,22 +122,54 @@ public class BookDTO {
                 '}';
     }
 
+    //Nadpisana metoda equals do porownywania dwoch ksiazek
     @Override
-    public boolean equals(Object o)
-    {
-        if(o==null)
+    public boolean equals(Object o) {
+        //o moze byc null
+        if (o == null)
             return false;
-        else if (o==this)
+        //o moze byc tym samym obiektem co this
+        else if (o == this)
             return true;
-        else
-            if(!(o instanceof BookDTO))
-                return false;
 
+        //sprawdzanie czy to ta sama klasa
+        if (!(o instanceof BookDTO))
+            return false;
+
+        //rzutowanie
         BookDTO bookDTO = (BookDTO) o;
 
-
-        if(!(this.getAuthor().equals(bookDTO.getAuthor())))
+        //sprawdzanie pól
+        if (!(this.author.equals(bookDTO.author)))
             return false;
+        if (!(this.category.equals(bookDTO.category)))
+            return false;
+        if (!(this.idBook == bookDTO.idBook))
+            return false;
+        if (!(this.numberOfCopies == bookDTO.numberOfCopies))
+            return false;
+        if (!(this.rentalTime == bookDTO.rentalTime))
+            return false;
+        if (!(this.title.equals(bookDTO.title)))
+            return false;
+
+        //zatem ksiazki maja listy swoich zamowien :
+
+
+        //jesli obie maja listy sprawdzamy czy sa rowne(musza miec taka sama dlugosc i
+        //miec ksiazki te same w tej samej kolejnosci)
+
+
+        List<IssueDTO> l1 = new LinkedList<>(this.issuesOfThisBook);
+        List<IssueDTO> l2 = new LinkedList<>(bookDTO.issuesOfThisBook);
+        Comparator<IssueDTO> comparator = Comparator.comparingLong(IssueDTO::getIdIssue);
+
+        l1.sort(comparator);
+        l2.sort(comparator);
+
+        return l1.size() == l2.size() && l1.equals(l2);
+
+
     }
 
 
