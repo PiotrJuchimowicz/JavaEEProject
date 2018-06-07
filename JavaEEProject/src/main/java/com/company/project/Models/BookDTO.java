@@ -118,5 +118,25 @@ public class BookDTO {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if(o==null)
+            return false;
+        else if (o==this)
+            return true;
+        else
+            if(!(o instanceof BookDTO))
+                return false;
+
+        BookDTO bookDTO = (BookDTO) o;
+
+
+        if(!(this.getAuthor().equals(bookDTO.getAuthor())))
+            return false;
+    }
+
+
+
 
 }

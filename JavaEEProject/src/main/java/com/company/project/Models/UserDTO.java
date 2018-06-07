@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "USER")
-@NamedQueries({@NamedQuery(name = "findAllUsers", query = "Select u From UserDTO  u ")})
+@NamedQueries({@NamedQuery(name = "findAllUsers", query = "Select u From UserDTO  u "),@NamedQuery(name="didHeBorrowThatBook",query = "Select i From IssueDTO  i Where i.user.id=:userId AND i.book.id=:bookId")})
 public class UserDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

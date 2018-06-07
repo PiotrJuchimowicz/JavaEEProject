@@ -1,6 +1,9 @@
 package com.company.project.HibernateDAO;
+
 import com.company.project.Factory.JpaFactory;
 import com.company.project.JpaDAO.UserJpaDAO;
+import com.company.project.Models.BookDTO;
+import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -65,6 +68,24 @@ public class UserHibernateDAO implements UserJpaDAO {
         em.close();
         JpaFactory.closeEntityManagerFactory();
 
+    }
+
+    @Override
+    public boolean didHeBorrowThatBook(UserDTO userDTO, BookDTO bookDTO) {
+        EntityManager em = JpaFactory.getEntityManager();
+        em.getTransaction().begin();
+
+        TypedQuery<IssueDTO> query = em.createNamedQuery("didHeBorrowThatBook", IssueDTO.class);
+        query.setParameter("userId", userDTO.getIdUser());
+        query.setParameter("bookId", bookDTO.getIdBook());
+
+        List<IssueDTO> result = query.getResultList();
+
+        em.getTransaction().commit();
+        em.close();
+        JpaFactory.closeEntityManagerFactory();
+
+        return result != null;
     }
 
 
