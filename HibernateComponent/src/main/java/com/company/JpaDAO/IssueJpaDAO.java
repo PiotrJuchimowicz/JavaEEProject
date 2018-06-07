@@ -26,8 +26,6 @@ public interface IssueJpaDAO {
     List<IssueDTO> findReservationsByThisUser(long id);
 
     List<IssueDTO> findAllReservations();
+
     //podajesz date i zwraca stringa
-
-
-
 }

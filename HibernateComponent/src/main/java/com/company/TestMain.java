@@ -9,15 +9,14 @@ import com.company.JpaDAO.UserJpaDAO;
 import com.company.Models.BookDTO;
 import com.company.Models.IssueDTO;
 import com.company.Models.UserDTO;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 //W warstwie wyzszej trzeba bedzie przetwarzac haslo na hasz oraz
 // tworzyć powiązania np  dodawać danemu użytkownikowi zamówienie a zamówieniu użytkownika
 //Do tej warstwy trafia obiekt który jest już gotowy do zapisu w bazie
 public class TestMain {
     public static void main(String[] args) {
+
     BookJpaDAO bookJpaDAO = new BookHibernateDAO();
     IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
     UserJpaDAO userJpaDAO = new UserHibernateDAO();
@@ -29,8 +28,5 @@ public class TestMain {
 
         IssueDTO issueDTO = new IssueDTO(bookDTO,userDTO,null,null, LocalDateTime.now());
         issueJpaDAO.add(issueDTO);
-
-
-
     }
 }

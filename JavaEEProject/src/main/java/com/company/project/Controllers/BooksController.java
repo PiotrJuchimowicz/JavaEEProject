@@ -11,6 +11,7 @@ import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import org.apache.taglibs.standard.tag.common.fmt.RequestEncodingSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.awt.print.Book;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -57,6 +59,32 @@ public class BooksController {
     }
 
     @RequestMapping(value="/add", method=RequestMethod.POST)
+    public String submitAdd( BookDTO book, Model m) {
+        BookHibernateDAO bdao = new BookHibernateDAO();
+
+        // tu sprawdzenie czy wszystko ok z książką
+        int ifSthWrong = 0; //inkrementacja jeżeli coś jest źle
+        if(book.getAuthor().length()<3) ifSthWrong++;
+        if(book.getTitle().length()<3) ifSthWrong++;
+        if(book.getCategory().length()<3) ifSthWrong++;
+        if(book.getRentalTime() != BookDTO.rentalTime.ONEDAY
+                && book.getRentalTime() != BookDTO.rentalTime.SEVENDAYS
+                && book.getRentalTime() != BookDTO.rentalTime.THREEMONTHS) ifSthWrong++;
+        if(book.getNumberOfCopies() <= 0) ifSthWrong++;
+
+        //jeśli tak to
+        if( ifSthWrong == 0 ) {
+            bdao.add(book);
+            m.addAttribute("message", "Dodanie książki przebiegło pomyślnie.");
+        }
+        //jeśli nie to
+        else m.addAttribute("message", "Dodanie książki nie udało się.");
+        return "book-add-response";
+    }
+  
+  
+    //Metoda z walidacją - jak zadziała można zmienić
+    /*@RequestMapping(value="/add", method=RequestMethod.POST)
     public String submitAdd (@Valid BookDTO book, Model model, BindingResult bindingResult ){
         BookHibernateDAO bookDAO = new BookHibernateDAO();
         bookDAO.add(book);
@@ -69,15 +97,13 @@ public class BooksController {
         }else {
             return "confirmation";
         }
-    }
+    }*/
 
     @RequestMapping(value="/getall")
     public String getAll(Model theModel) {
-
         List<BookDTO> list = bookJpaDAO.findAllBooks();
         theModel.addAttribute("books", list);
         return "books-get-all";
-
     }
 
     @RequestMapping("/findbyid/{id}")
@@ -86,14 +112,11 @@ public class BooksController {
        theModel.addAttribute("book", book);
        return "book-get-one";
 
-    }
-
     @RequestMapping("/category/{category}")
     public String getByCategory(@PathVariable String category, Model theModel){
         List<BookDTO> books = bookJpaDAO.findByCategory(category);
         theModel.addAttribute("books", books);
         return "book-get-category";
-
     }
 
     @RequestMapping("/author/{author}")
@@ -101,7 +124,6 @@ public class BooksController {
         List<BookDTO> books = bookJpaDAO.findByAuthor(author);
         theModel.addAttribute("books", books);
         return "book-get-author";
-
     }
 
     @RequestMapping("/title/{title}")
@@ -109,7 +131,6 @@ public class BooksController {
         List<BookDTO> books = bookJpaDAO.findByTitle(title);
         theModel.addAttribute("books", books);
         return "book-get-title";
-
     }
 
     @RequestMapping("/{id}/reservation")
@@ -140,6 +161,4 @@ public class BooksController {
 
         return "book-hire";
     }
-
-
 }

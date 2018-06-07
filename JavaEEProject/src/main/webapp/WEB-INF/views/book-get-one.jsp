@@ -8,6 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+  
 <head>
     <title>Książka nr ${book.getIdBook()}</title>
     <style>
@@ -16,12 +17,12 @@
             text-decoration: underline;
             cursor: pointer;
         }
-
         a:link:active, a:visited:active {
             color: black;
         }
     </style>
 </head>
+  
 <body>
     <h2>${book.getTitle()}</h2>
     <h3>${book.getAuthor()}</h3>
