@@ -52,6 +52,9 @@ public class UserDTO {
         return idUser;
     }
 
+    // Id typu string jest potrzebne do uzyskania adresu url (żeby z widoku users-get-all przejść do widoku user-get-one)
+    public String idUserToString() { return String.valueOf(idUser); }
+
     public void setIdUser(long userId) {
         this.idUser = userId;
     }

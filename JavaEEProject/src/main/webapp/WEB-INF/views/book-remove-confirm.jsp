@@ -27,5 +27,6 @@
     <h1>Usunąć z bazy książkę nr ${book.getIdBook()}?</h1>
     <a href="<c:url value='/books/remove'/>/${book.idBookToString()}">Usuń</a> <br>
     <a href="<c:url value='/books/findbyid'/>/${book.idBookToString()}">Anuluj</a> <br>
+
 </body>
 </html>

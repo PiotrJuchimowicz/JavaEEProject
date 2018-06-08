@@ -12,12 +12,17 @@
     <title>Użytkownicy seriwsu</title>
 </head>
 <body>
-<h2>Lista użytkowników serwisu</h2>
+<h1>Lista użytkowników serwisu</h1>
+<hr><hr>
+<a href="<c:url value='/users/add'/>">Dodaj nowego użytkownika</a> <br>
+<hr><hr>
+<c:if test="${empty users}">
+    Brak użytkowników.
+</c:if>
 <c:forEach items = "${users}" var="u">
-    ${u.getIdUser()}<br>
-    ${u.getName()}<br>
-    ${u.getSurname()}<br>
-    ${b.getEmail()}<br>
+    <h3>${u.getIdUser()}: ${u.getName()} ${u.getSurname()}</h3>
+    ${u.getEmail()}<br>
+    <a href="<c:url value='/users/findbyid'/>/${u.idUserToString()}">Przejdź do strony użytkownika</a><br>
     <hr>
 </c:forEach>
 </body>

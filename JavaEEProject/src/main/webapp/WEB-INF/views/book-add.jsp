@@ -42,6 +42,8 @@
         <br/>
         <input type="submit" value="Zatwierdź" />
     </form:form>
+
+    <a href="<c:url value='/books/getall'/>">Powrót do listy książek</a> <br>
 </div>
 </body>
 </html>

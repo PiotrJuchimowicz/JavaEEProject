@@ -1,14 +1,17 @@
 package com.company.project.Controllers;
 
+import com.company.project.HibernateDAO.UserHibernateDAO;
 import com.company.project.JpaDAO.UserJpaDAO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -18,13 +21,49 @@ public class UsersController {
     @Autowired
     private UserJpaDAO userJpaDAO;
 
-
-
-    @RequestMapping("/remove/{id}")
-    public void removeUser(@PathVariable long id){
-        userJpaDAO.remove(userJpaDAO.get(id));
+    @RequestMapping("/removeconfirm/{id}") //Z: widok pośredni między szczegółami użytkownika a usunięciem
+    public String removeConfirm(@PathVariable long id, Model theModel) {
+        UserDTO user = userJpaDAO.get(id);
+        theModel.addAttribute("user", user);
+        return "user-remove-confirm";
     }
 
+    @RequestMapping("/remove/{id}")
+    public String removeUser(@PathVariable String id){
+        userJpaDAO.remove(userJpaDAO.get(Long.parseLong(id)));
+        return "redirect:/users/findall";
+    }
+
+    //Z: Służy do stworzenia listy do wybierania opcji
+    @ModelAttribute("roles")
+    public UserDTO.Role[] roles() {
+        return UserDTO.Role.values();
+    }
+
+    @RequestMapping(value="/add", method=RequestMethod.GET)
+    public String loadAddPage(Model model) {
+        UserDTO user = new UserDTO();
+        model.addAttribute("user", user);
+        return "user-add";
+    }
+
+    @RequestMapping(value="/add", method=RequestMethod.POST)
+    public String submitAdd (@Valid UserDTO user, Model model, BindingResult bindingResult ){
+        UserHibernateDAO userDAO = new UserHibernateDAO();
+        try { userDAO.add(user);
+        if(bindingResult.hasErrors())
+        {
+            return "error";
+        } else {
+            return "confirmation";
+        }
+        }
+        catch(Exception e) {
+            return "error";
+        }
+    }
+
+    /*
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public void addBook(HttpServletRequest request , Model theModel) {
 
@@ -48,7 +87,7 @@ public class UsersController {
             //jakas obsluga
         }
 
-    }
+    }*/
 
 
 
