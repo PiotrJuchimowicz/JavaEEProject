@@ -1,5 +1,10 @@
 package com.company.project.Models;
 
+import com.company.project.HibernateDAO.BookHibernateDAO;
+import com.company.project.HibernateDAO.IssueHibernateDAO;
+import com.company.project.JpaDAO.BookJpaDAO;
+import com.company.project.JpaDAO.IssueJpaDAO;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.lang.Nullable;
@@ -25,18 +30,20 @@ public class BookDTO {
 
     }
 
-   //adnotacje tu będą jeszcze
-    @NotNull
-    @Size(min=1, message = "wpisz cos")
+   @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String author;
+    @Column(nullable = false)
     private String category;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private rentalTime rentalTime;
+    @Column(nullable = false)
     private int numberOfCopies;
 
     //domyslnie pusta lista powiazana z dana ksiazka(do ktorej potem bedzie mozna dodawac)
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book",fetch = FetchType.LAZY)
     private List<IssueDTO> issuesOfThisBook  = new LinkedList<>();
 
 
@@ -54,6 +61,10 @@ public class BookDTO {
     public void addIssue(IssueDTO issueDTO)
     {
         issuesOfThisBook.add(issueDTO);
+    }
+    public void removeIssue(IssueDTO issueDTO)
+    {
+        issuesOfThisBook.remove(issueDTO);
     }
 
     public List<IssueDTO> getIssuesOfThisBook() {
@@ -161,18 +172,30 @@ public class BookDTO {
 
 
 
+
+
+
         //jesli obie maja listy sprawdzamy czy sa rowne(musza miec taka sama dlugosc i
         //miec ksiazki te same w tej samej kolejnosci)
 
 
-        List<IssueDTO> l1 = new LinkedList<>(this.issuesOfThisBook);
-        List<IssueDTO> l2 = new LinkedList<>(bookDTO.issuesOfThisBook);
-        Comparator<IssueDTO> comparator = Comparator.comparingLong(IssueDTO::getIdIssue);
 
+
+        if(this.getIssuesOfThisBook()==null || bookDTO.getIssuesOfThisBook()==null)
+            return true;
+        IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
+        List<IssueDTO> l1 = new LinkedList<>(issueJpaDAO.findIssuesOfThisBook(this.getIdBook()));
+        List<IssueDTO> l2 = new LinkedList<>(issueJpaDAO.findIssuesOfThisBook(bookDTO.getIdBook()));
+
+
+        if(!(l1.size() == l2.size()))
+            return false;
+
+        Comparator<IssueDTO> comparator = Comparator.comparingLong(IssueDTO::getIdIssue);
         l1.sort(comparator);
         l2.sort(comparator);
 
-        return l1.size() == l2.size() && l1.equals(l2);
+        return l1.equals(l2);
 
 
     }

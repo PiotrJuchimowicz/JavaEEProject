@@ -10,16 +10,19 @@ public class IssueDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idIssue;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idBook")
     private BookDTO book;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUser")
     private UserDTO user;
 
     //czas w formacie yyyy-MM-dd-HH-mm-ss.
+    @Column(nullable = true)
     private LocalDateTime reservationDate;// data rezerwacji
+    @Column(nullable = true)
     private LocalDateTime issueDate;// data wydania egzemplarza
+    @Column(nullable = true)
     private LocalDateTime returnDate;//data zwrotu egzemplarza
 
 
@@ -86,9 +89,59 @@ public class IssueDTO {
     public String toString() {
         return "IssueDTO{" +
                 "idIssue=" + idIssue +
+                ", book=" + book +
+                ", user=" + user +
                 ", reservationDate=" + reservationDate +
                 ", issueDate=" + issueDate +
                 ", returnDate=" + returnDate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        //o moze byc null
+        if (o == null)
+            return false;
+            //o moze byc tym samym obiektem co this
+        else if (o == this)
+            return true;
+
+        //sprawdzanie czy to ta sama klasa
+        if (!(o instanceof IssueDTO))
+            return false;
+
+        //rzutowanie
+        IssueDTO issueDTO = (IssueDTO) o;
+
+        if(!(this.getBook().getIdBook()==issueDTO.getBook().getIdBook()))
+            return false;
+
+        if(!(this.getUser().getIdUser()==issueDTO.getUser().getIdUser()))
+            return false;
+
+
+
+        if(!(this.idIssue==issueDTO.idIssue))
+            return false;
+
+        //POROWNUJEMY DATY Z DOKLADNOSCIA DO MINUTY
+        if(this.getIssueDate()!=null && issueDTO.getIssueDate()!=null) {
+            if (!(this.issueDate.withSecond(0).withNano(0).equals(issueDTO.issueDate.withSecond(0).withNano(0))))
+                return false;
+        }
+
+        if(this.getReservationDate()!=null && issueDTO.getReservationDate()!=null) {
+            if (!(this.reservationDate.withSecond(0).withNano(0).equals(issueDTO.reservationDate.withSecond(0).withNano(0))))
+                return false;
+        }
+
+        if(this.getReturnDate()!=null && issueDTO.getReturnDate()!=null) {
+            if (!(this.returnDate.withSecond(0).withNano(0).equals(issueDTO.returnDate.withSecond(0).withNano(0))))
+                return false;
+        }
+
+
+        return  true;
     }
 }

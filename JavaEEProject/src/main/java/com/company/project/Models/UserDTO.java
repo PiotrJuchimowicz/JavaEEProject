@@ -1,5 +1,7 @@
 package com.company.project.Models;
 
+import com.company.project.HibernateDAO.IssueHibernateDAO;
+import com.company.project.JpaDAO.IssueJpaDAO;
 import org.apache.catalina.User;
 
 import javax.persistence.*;
@@ -15,39 +17,58 @@ public class UserDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idUser;
 
-    public enum Role {
-        CLIENT, ADMIN, EMPLOYEE
 
 
-    }
+    @OneToOne(mappedBy = "username")
+    private authorities authority;
 
-    private String name, surname, email;
-    private int password;//hasz hasła
+
+
+    @Column(nullable = false,unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private int enabled;
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private String surname;
+    @Column(nullable = false)
+    private String email;
+    @Column(nullable = false)
+    private String password;//hasz hasła
+    @Column(nullable = false)
     private double payment;
     @Enumerated(EnumType.STRING)
-    private Role role;
+
 
     //domyslnie pusta lista powiazana z danym userem do ktorej potem bedzie mozna dodawac
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
     private List<IssueDTO> issuesOfThisUser = new LinkedList<>();
 
 
     public UserDTO() {
     }
 
-    public UserDTO(String name, String surname, String email, int password, double payment, Role role) {
+    public UserDTO(authorities authority, String username, int enabled, String name, String surname, String email, String password, double payment) {
+        this.authority = authority;
+        this.username = username;
+        this.enabled = enabled;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.payment = payment;
-        this.role = role;
     }
 
     //Dodaje do aktualnej listy zamowien nowe zamowienie
     public void addIssue(IssueDTO issueDTO)
     {
         issuesOfThisUser.add(issueDTO);
+    }
+    public void removeIssue(IssueDTO issueDTO)
+    {
+        issuesOfThisUser.remove(issueDTO);
     }
 
     public List<IssueDTO> getIssuesOfThisUser() {
@@ -56,6 +77,31 @@ public class UserDTO {
 
     public void setIssuesOfThisUser(List<IssueDTO> issuesOfThisUser) {
         this.issuesOfThisUser = issuesOfThisUser;
+    }
+
+
+    public authorities getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(authorities authority) {
+        this.authority = authority;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 
     public long getIdUser() {
@@ -90,11 +136,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -106,24 +152,19 @@ public class UserDTO {
         this.payment = payment;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     @Override
     public String toString() {
         return "UserDTO{" +
-                "userId=" + idUser +
+                "idUser=" + idUser +
+                ", authority=" + authority +
+                ", username='" + username + '\'' +
+                ", enabled=" + enabled +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", payment=" + payment +
-                ", role=" + role +
                 '}';
     }
 
@@ -151,13 +192,17 @@ public class UserDTO {
             return false;
         if (!(this.idUser == userDTO.idUser))
             return false;
-        if (!(this.password == userDTO.password))
+        if (!(this.password.equals(userDTO.password) ))
             return false;
         if (!(Double.compare(this.payment,userDTO.payment)==0 ))
             return false;
         if (!(this.surname.equals(userDTO.surname)))
             return false;
-        if (!(this.role.equals(userDTO.role)))
+        if(this.getAuthority()!=null && userDTO.getAuthority()!=null) {
+            if (!(this.getAuthority().equals(userDTO.getAuthority())))
+                return false;
+        }
+        if(!(this.username.equals(userDTO.username)))
             return false;
 
 
@@ -165,14 +210,26 @@ public class UserDTO {
 
 
 
-        List<IssueDTO> l1 = new LinkedList<>(this.issuesOfThisUser);
-        List<IssueDTO> l2 = new LinkedList<>(userDTO.issuesOfThisUser);
-        Comparator<IssueDTO> comparator = Comparator.comparingLong(IssueDTO::getIdIssue);
 
+        if(this.getIssuesOfThisUser()==null || userDTO.getIssuesOfThisUser()==null)
+            return true;
+
+        IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
+        List<IssueDTO> l1 = new LinkedList<>(issueJpaDAO.findIssuesByThisUser(this.getIdUser()));
+        List<IssueDTO> l2 = new LinkedList<>(issueJpaDAO.findIssuesByThisUser(userDTO.getIdUser()));
+
+        if(!(l1.size()==l2.size()))
+                return false;
+        Comparator<IssueDTO> comparator = Comparator.comparingLong(IssueDTO::getIdIssue);
         l1.sort(comparator);
         l2.sort(comparator);
 
-        return l1.size() == l2.size() && l1.equals(l2);
+        return l1.equals(l2);
+
+
+
+
+
 
 
     }

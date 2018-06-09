@@ -11,6 +11,7 @@ import com.company.project.JpaDAO.UserJpaDAO;
 import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
+import com.company.project.Models.authorities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,13 +57,13 @@ public class IssuesController {
         BookHibernateDAO bdao = new BookHibernateDAO();
         bdao.add(book);
 
-        UserDTO user = new UserDTO("ania", "dssds", "dsds@gmail.com", 121, 2.0, UserDTO.Role.CLIENT);
+       // UserDTO user = new UserDTO(null,"username",1,);
         UserHibernateDAO udao = new UserHibernateDAO();
-        udao.add(user);
+       // udao.add(user);
 
-        IssueDTO issue = new IssueDTO(book, user, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now() );
+        //IssueDTO issue = new IssueDTO(book, user, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now() );
         IssueHibernateDAO idao = new IssueHibernateDAO();
-        idao.add(issue);
+        //idao.add(issue);
 
         List<IssueDTO> list = issueJpaDAO.findAllIssues();
         theModel.addAllAttributes(list);

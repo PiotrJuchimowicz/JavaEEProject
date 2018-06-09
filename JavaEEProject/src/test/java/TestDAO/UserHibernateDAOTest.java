@@ -9,10 +9,13 @@ import com.company.project.JpaDAO.UserJpaDAO;
 import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
+import com.company.project.Models.authorities;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 //TODO
-class UserHibernateDAOTest {
+ public class UserHibernateDAOTest {
 
 
     @Test
@@ -31,10 +34,11 @@ class UserHibernateDAOTest {
         String name = "anyName";
         String surname = "anySurname";
         String email = "anyEmail";
-        int password = 1234;
+        String password = "1234";
+        String username = "usernameeeeee";
         double payment = 1000;
-        UserDTO.Role role = UserDTO.Role.ADMIN;
-        userDTO = new UserDTO(name, surname, email, password, payment, role);
+        authorities authorities = null;
+        userDTO = new UserDTO(authorities,username,1,name, surname, email, password, payment );
 
         //czy dziala dodawanie i pobieranie go z powrtoem
         userDao.add(userDTO);
@@ -57,7 +61,80 @@ class UserHibernateDAOTest {
 
     }
 
-    //Sprawdza czy taki  klient wypożyczył taką książkę
+
+    @Test
+    void CRUDTestForIssue() {
+        BookDTO bookDTO = new BookDTO("title", "author", "category", BookDTO.rentalTime.SEVENDAYS, 4);
+        UserDTO userDTO = new UserDTO(null,"username",1,"Name", "Surname", "email", "1", 1000.21 );
+
+        BookJpaDAO bookJpaDAO = new BookHibernateDAO();
+        UserJpaDAO userJpaDAO = new UserHibernateDAO();
+
+        bookJpaDAO.add(bookDTO);
+        userJpaDAO.add(userDTO);
+
+        IssueDTO issueDTO;
+        LocalDateTime reservationDate = LocalDateTime.of(2018, Month.APRIL, 2, 1, 1);// data rezerwacji
+        LocalDateTime issueDate = LocalDateTime.of(2018, Month.AUGUST, 2, 1, 1);// data wydania egzemplarza
+        LocalDateTime returnDate = LocalDateTime.now();//data zwrotu egzemplarza
+        issueDTO = new IssueDTO(bookDTO, userDTO, reservationDate, issueDate, returnDate);
+
+        //uzupelniam starym wersjom book oraz ksiazki dane zamowienie
+        bookDTO.addIssue(issueDTO);
+        userDTO.addIssue(issueDTO);
+
+        IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
+
+
+        //dodaje
+        issueJpaDAO.add(issueDTO);
+
+        //test dla add i get
+
+        long idIssue = issueDTO.getIdIssue();
+        long idBook = bookDTO.getIdBook();
+        long idUser = userDTO.getIdUser();
+        //biore
+        IssueDTO afterIssue = issueJpaDAO.get(idIssue);
+
+        //porownuje
+        assertTrue(afterIssue.equals(issueDTO));
+
+
+        //testy dla update
+        LocalDateTime date = LocalDateTime.now();
+        issueDTO.setIssueDate(date);
+        issueJpaDAO.update(issueDTO);
+
+        assertTrue(issueJpaDAO.get(idIssue).getIssueDate().withNano(0).withSecond(0).equals(date.withSecond(0).withNano(0)));
+
+
+
+        //JESLI CHCE USUWAC ISSUE JAKO PIERWSZE MUSZA BYC TE 2 LINIJKI PO USUNIECIU  ISSUE !!!!!!!!
+        issueJpaDAO.remove(issueDTO);
+        userDTO.removeIssue(issueDTO);
+        bookDTO.removeIssue(issueDTO);
+        userJpaDAO.remove(userDTO);
+        bookJpaDAO.remove(bookDTO);
+
+
+
+
+        //userJpaDAO.update(userDTO);
+        //bookJpaDAO.update(bookDTO);
+
+        //sprzatam
+
+
+        //sprawdzam czy usunalem
+        assertTrue(issueJpaDAO.get(idIssue) == null);
+        assertTrue(bookJpaDAO.get(idBook) == null);
+        assertTrue(userJpaDAO.get(idUser) == null);
+
+
+    }
+
+    // TEST DLA :Sprawdza czy taki  klient wypożyczył taką książkę
     @Test
     void didHeBorrowThatBookTest() {
         //tworze usera
@@ -66,11 +143,11 @@ class UserHibernateDAOTest {
         String name = "anyName";
         String surname = "anySurname";
         String email = "anyEmail";
-        int password = 1234;
+        String password = "1234";
         double payment = 1000;
-        UserDTO.Role role = UserDTO.Role.ADMIN;
+        authorities role=null;
 
-        user = new UserDTO(name, surname, email, password, payment, role);
+        user = new UserDTO(role,"username",1,name, surname, email, password, payment);
 
         //tworze ksiazke
         BookJpaDAO bookDao = new BookHibernateDAO();
@@ -82,6 +159,7 @@ class UserHibernateDAOTest {
 
         BookDTO book = new BookDTO(title, author, category, rentalTime, numberOfCopies);
 
+        //przed dodaniem zamowienia na ta ksiazke dla tego usera musze ICH na poczatku dodac- inaczej nie zadziala
         //dodaje ich
         userDao.add(user);
         bookDao.add(book);
@@ -91,10 +169,8 @@ class UserHibernateDAOTest {
         //tworze zamowienie i dodaje je
         IssueDTO issueDTO = new IssueDTO(book, user, null, null, null);
         IssueJpaDAO issueDao = new IssueHibernateDAO();
-        issueDao.add(issueDTO);
-       
-
-
+        issueDao.add(issueDTO);//dodaje issue oraz automatycznie userowi oraz ksiazce
+        // dodawane jest do listy to issue
 
 
         //sprzatanie
@@ -103,16 +179,15 @@ class UserHibernateDAOTest {
         bookDao.remove(book);
 
 
-
     }
 
     @Test
     void findAllUsersTest() {
         UserJpaDAO userJpaDAO = new UserHibernateDAO();
-       UserDTO u1, u2, u3;
-        u1 = new UserDTO("1","2","3",1,1, UserDTO.Role.ADMIN);
-        u2 = new UserDTO("1","2","3",1,1, UserDTO.Role.ADMIN);
-        u3 =new UserDTO("1","2","3",1,1, UserDTO.Role.ADMIN);
+        UserDTO u1, u2, u3;
+        u1 = new UserDTO(null,"username1",1,"name", "surname", "email", "password", 1);
+        u2 = new UserDTO(null,"username2",1,"name", "surname", "email", "password", 1);
+        u3 = new UserDTO(null,"username3",1,"name", "surname", "email", "password", 1);
 
         //pomocnicza lista
         List<UserDTO> supplementaryList = new LinkedList<>();
@@ -127,7 +202,7 @@ class UserHibernateDAOTest {
         userJpaDAO.add(u3);
 
         //bierze userow z bazy
-        List<UserDTO> result =userJpaDAO.findAllUsers();
+        List<UserDTO> result = userJpaDAO.findAllUsers();
         //jesli listy sa rowne to  musza miec rowniez elementy w tej samej kolejnosci
         //sortowanko :
         Comparator<UserDTO> comparator = Comparator.comparingLong(UserDTO::getIdUser);

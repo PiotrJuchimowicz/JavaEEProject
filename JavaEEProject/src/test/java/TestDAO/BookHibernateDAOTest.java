@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 //TODO
-class BookHibernateDAOTest {
+ public class BookHibernateDAOTest {
 
 
     @Test
