@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -23,8 +24,10 @@ public class BookDTO {
     }
 
    //adnotacje tu będą jeszcze
-    @NotNull
-    @Size(min=1, message = "wpisz cos")
+    //to nie działa mi jeszcze
+   @NotNull(message="is required")
+   @Size(min=1, message="is required")
+   @Column(nullable = false)
     private String title;
     private String author;
     private String category;
@@ -33,7 +36,7 @@ public class BookDTO {
     private int numberOfCopies;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private List<IssueDTO> issuesOfThisBook;
+    private List<IssueDTO> issuesOfThisBook = new LinkedList<>();
 
 
     public BookDTO() { }

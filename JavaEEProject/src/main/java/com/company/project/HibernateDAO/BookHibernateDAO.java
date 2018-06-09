@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 //Przed dodaniem wypożyczenia danej książki dana książka musi być w bazie - inaczej rzuci wyjątek
@@ -21,7 +22,7 @@ public class BookHibernateDAO implements BookJpaDAO {
     //dodaje książkę b,ktora musi byc wczesniej utworzona i podana do ponizszej metody.
     //Zwraca id dodanego właśnie rekordu
     @Override
-    public void add(BookDTO b) {
+    public void add( BookDTO b) {
 
         EntityManager em = JpaFactory.getEntityManager();
         em.getTransaction().begin();

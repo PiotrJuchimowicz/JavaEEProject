@@ -31,10 +31,11 @@ public class CreateController {
 
     @RequestMapping("/user")
     public void createUser(){
-
+/*
         UserJpaDAO userJpaDAO = new UserHibernateDAO();
         UserDTO user = new UserDTO("Iwona", "Strubczewska", "iwona.strubczewska@gmail.com", 100320, 0, UserDTO.Role.CLIENT, null);
         userJpaDAO.add(user);
+        */
     }
 
     @RequestMapping("/issue")

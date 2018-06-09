@@ -1,6 +1,7 @@
 package com.company.project.Models;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,6 @@ public class UserDTO {
     public enum Role {
         CLIENT, ADMIN, EMPLOYEE
 
-
     }
 
     private String name, surname, email;
@@ -24,7 +24,7 @@ public class UserDTO {
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<IssueDTO> issuesOfThisUser;
+    private List<IssueDTO> issuesOfThisUser = new LinkedList<>();
 
 
     public UserDTO() {

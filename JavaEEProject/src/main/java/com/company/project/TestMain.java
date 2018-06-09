@@ -18,7 +18,7 @@ import java.util.List;
 //Do tej warstwy trafia obiekt który jest już gotowy do zapisu w bazie
 public class TestMain {
     public static void main(String[] args) {
-
+/*
         BookDTO bookDTO = new BookDTO("1", "2", "3", BookDTO.rentalTime.SEVENDAYS, 10, null);
         UserDTO userDTO = new UserDTO("1", "2", "3", 1234, 12.00, UserDTO.Role.CLIENT, null);
 
@@ -34,7 +34,7 @@ public class TestMain {
         List<IssueDTO> list = issueJpaDAO.findIssuesOfThisBook(1);
 
         System.out.println(list.get(0).toString());
-
+*/
 
     }
 }
