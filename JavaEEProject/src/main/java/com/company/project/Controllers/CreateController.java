@@ -34,8 +34,12 @@ public class CreateController {
     public void createUser(){
 
         UserJpaDAO userJpaDAO = new UserHibernateDAO();
+
        // UserDTO user = new UserDTO(authorities.Role.ADMIN,"username1",1,"Iwona", "Strubczewska", "iwona.strubczewska@gmail.com", "100320", 0);
        // userJpaDAO.add(user);
+
+
+
     }
 
     @RequestMapping("/issue")

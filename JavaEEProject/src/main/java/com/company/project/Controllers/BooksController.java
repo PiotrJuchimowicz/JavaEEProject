@@ -13,10 +13,12 @@ import com.company.project.Models.UserDTO;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.taglibs.standard.tag.common.fmt.RequestEncodingSupport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,7 +61,16 @@ public class BooksController {
         return "book-add";
     }
 
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
+
+/*
     @RequestMapping(value="/add", method=RequestMethod.POST)
+<<<<<<< HEAD
     public String submitAdd( BookDTO book, Model m) {
         BookHibernateDAO bdao = new BookHibernateDAO();
 
@@ -87,13 +98,17 @@ public class BooksController {
     //Metoda z walidacją - jak zadziała można zmienić
     /*@RequestMapping(value="/add", method=RequestMethod.POST)
     public String submitAdd (@Valid BookDTO book, Model model, BindingResult bindingResult ){
+=======
+    public String submitAdd (@Valid BookDTO book,BindingResult bindingResult, Model model ){
+>>>>>>> 0f7b36e4d0ec9b64c10c939111aee84003f1b093
         BookHibernateDAO bookDAO = new BookHibernateDAO();
         bookDAO.add(book);
         //m.addAttribute("message", "Successfully saved book: " + book.toString());
 
         if(bindingResult.hasErrors())
         {
-            return "error";
+           // model.addAttribute("Error", "Pole login/hasło nie moze być puste.");
+            return "book-add";
 
         }else {
             return "confirmation";
@@ -141,7 +156,7 @@ public class BooksController {
     @RequestMapping("/{id}/reservation")
     public String bookReservation(@PathVariable String id){
 
-        UserJpaDAO userJpaDAO = new UserHibernateDAO(); //nie wiem czy nie trzeba wstrzyknąć
+        UserJpaDAO userJpaDAO = new UserHibernateDAO();
         IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
 
         BookDTO book = bookJpaDAO.get(Long.parseLong(id));

@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Zuzia
@@ -21,25 +23,51 @@
             color: black;
             text-decoration: none;
         }
+
     </style>
 </head>
 <body>
-    <h1>Lista zasobów biblioteki</h1>
-    <hr><hr>
-    <a href="<c:url value='/books/add'/>">Dodaj nową książkę</a> <br>
-    <hr><hr>
 
-    <c:forEach items = "${books}" var="b">
-        <h2>${b.getIdBook()}: ${b.getTitle()} - ${b.getAuthor()}</h2>
-        ${b.getCategory()}<br>
+<!-- przycisk rejestracja-->
+<div>
+    <a href="${pageContext.request.contextPath}/register/registration"
+       class="btn btn-primary"
+       role="button" aria-pressed="true">
+        Register New User
+    </a>
+</div>
 
-        <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}">Przejdź do strony książki</a>  <br>
+<!-- TO DODAJE PRZYCISK WYLOGUJ -->
+<form:form action="${pageContext.request.contextPath}/logout" method="POST">
 
-        <c:if test="${b.getNumberOfCopies() > 0}">
-            <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}"> TU BĘDZIE REZERWOWANIE</a>  <br>
-        </c:if>
+    <input type="submit" value="Wyloguj"/>
 
-        <hr>
-    </c:forEach>
+</form:form>
+
+
+<hr>
+
+<!-- tylko dla pracowników - dodawanie książki -->
+<security:authorize access="hasRole('EMPLOYEE')">
+    <p>
+        <a href="${pageContext.request.contextPath}/books/add">Dodaj ksiazke</a>
+        (tylko dla pracowników!)
+    </p>
+</security:authorize>
+<hr>
+
+<h1>Lista zasobów biblioteki</h1>
+
+<%--<a href="<c:url value='views/book-add.jsp'>">Dodaj nową książkę </a> <br>--%>
+
+
+<c:forEach items="${books}" var="b">
+    <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}"> ${b.getIdBook()}: ${b.getTitle()}
+        - ${b.getAuthor()}</a> <br>
+    ${b.getCategory()}<br>
+    <hr>
+</c:forEach>
+
+
 </body>
 </html>

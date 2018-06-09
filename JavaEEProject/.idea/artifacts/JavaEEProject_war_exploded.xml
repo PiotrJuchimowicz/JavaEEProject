@@ -1,17 +1,17 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="JavaEEProject:war exploded">
-    <output-path>$PROJECT_DIR$/target/project-0.0.1-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/sample/servlet/container/deploy/directory</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="JavaEEProject" />
         </element>
         <element id="directory" name="lib">
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-web/2.1.0.BUILD-SNAPSHOT/spring-boot-starter-web-2.1.0.BUILD-20180606.185305-164.jar" output-file-name="spring-boot-starter-web-2.1.0.BUILD-SNAPSHOT.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter/2.1.0.BUILD-SNAPSHOT/spring-boot-starter-2.1.0.BUILD-20180606.185306-164.jar" output-file-name="spring-boot-starter-2.1.0.BUILD-SNAPSHOT.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot/2.1.0.BUILD-SNAPSHOT/spring-boot-2.1.0.BUILD-20180606.185310-164.jar" output-file-name="spring-boot-2.1.0.BUILD-SNAPSHOT.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/2.1.0.BUILD-SNAPSHOT/spring-boot-autoconfigure-2.1.0.BUILD-20180606.185227-164.jar" output-file-name="spring-boot-autoconfigure-2.1.0.BUILD-SNAPSHOT.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-logging/2.1.0.BUILD-SNAPSHOT/spring-boot-starter-logging-2.1.0.BUILD-20180606.185300-164.jar" output-file-name="spring-boot-starter-logging-2.1.0.BUILD-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-web/2.1.0.BUILD-SNAPSHOT/spring-boot-starter-web-2.1.0.BUILD-20180607.094805-166.jar" output-file-name="spring-boot-starter-web-2.1.0.BUILD-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter/2.1.0.BUILD-SNAPSHOT/spring-boot-starter-2.1.0.BUILD-20180607.094807-166.jar" output-file-name="spring-boot-starter-2.1.0.BUILD-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot/2.1.0.BUILD-SNAPSHOT/spring-boot-2.1.0.BUILD-20180607.094811-166.jar" output-file-name="spring-boot-2.1.0.BUILD-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/2.1.0.BUILD-SNAPSHOT/spring-boot-autoconfigure-2.1.0.BUILD-20180607.094727-166.jar" output-file-name="spring-boot-autoconfigure-2.1.0.BUILD-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-logging/2.1.0.BUILD-SNAPSHOT/spring-boot-starter-logging-2.1.0.BUILD-20180607.094800-166.jar" output-file-name="spring-boot-starter-logging-2.1.0.BUILD-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.2.3" />
           <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.2.3" />
           <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-to-slf4j:2.10.0" />
@@ -19,14 +19,14 @@
           <element id="library" level="project" name="Maven: org.slf4j:jul-to-slf4j:1.7.25" />
           <element id="library" level="project" name="Maven: javax.annotation:javax.annotation-api:1.3.2" />
           <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.19" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-json/2.1.0.BUILD-SNAPSHOT/spring-boot-starter-json-2.1.0.BUILD-20180606.185258-164.jar" output-file-name="spring-boot-starter-json-2.1.0.BUILD-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-json/2.1.0.BUILD-SNAPSHOT/spring-boot-starter-json-2.1.0.BUILD-20180607.094758-166.jar" output-file-name="spring-boot-starter-json-2.1.0.BUILD-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.5" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.5" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.5" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.5" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.9.5" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-tomcat/2.1.0.BUILD-SNAPSHOT/spring-boot-starter-tomcat-2.1.0.BUILD-20180606.185303-164.jar" output-file-name="spring-boot-starter-tomcat-2.1.0.BUILD-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-tomcat/2.1.0.BUILD-SNAPSHOT/spring-boot-starter-tomcat-2.1.0.BUILD-20180607.094804-166.jar" output-file-name="spring-boot-starter-tomcat-2.1.0.BUILD-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:8.5.31" />
           <element id="library" level="project" name="Maven: org.hibernate.validator:hibernate-validator:6.0.10.Final" />
           <element id="library" level="project" name="Maven: javax.validation:validation-api:2.0.1.Final" />
@@ -62,10 +62,15 @@
           <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:8.5.31" />
           <element id="library" level="project" name="Maven: org.eclipse.jdt:ecj:3.12.3" />
           <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.0.6.RELEASE" />
+          <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.1.0.M1" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:5.0.5.RELEASE" />
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/project-0.0.1-SNAPSHOT/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/sample/servlet/container/deploy/directory/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="JavaEEProject/web/Web" />
     </root>

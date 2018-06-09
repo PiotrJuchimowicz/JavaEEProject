@@ -13,7 +13,10 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import java.util.Comparator;
+
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,6 +33,7 @@ public class BookDTO {
 
     }
 
+
    @Column(nullable = false)
     private String title;
     @Column(nullable = false)
@@ -42,9 +46,11 @@ public class BookDTO {
     @Column(nullable = false)
     private int numberOfCopies;
 
+
     //domyslnie pusta lista powiazana z dana ksiazka(do ktorej potem bedzie mozna dodawac)
     @OneToMany(mappedBy = "book",fetch = FetchType.LAZY)
     private List<IssueDTO> issuesOfThisBook  = new LinkedList<>();
+
 
 
     public BookDTO() { }

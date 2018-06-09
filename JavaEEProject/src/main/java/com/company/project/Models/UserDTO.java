@@ -5,7 +5,9 @@ import com.company.project.JpaDAO.IssueJpaDAO;
 import org.apache.catalina.User;
 
 import javax.persistence.*;
+
 import java.util.Comparator;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,8 +21,10 @@ public class UserDTO {
 
 
 
+
     @OneToOne(mappedBy = "username")
     private authorities authority;
+
 
 
 
@@ -42,8 +46,10 @@ public class UserDTO {
     @Enumerated(EnumType.STRING)
 
 
+
     //domyslnie pusta lista powiazana z danym userem do ktorej potem bedzie mozna dodawac
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
+
     private List<IssueDTO> issuesOfThisUser = new LinkedList<>();
 
 
