@@ -1,5 +1,6 @@
 package TestDAO;
 
+import com.company.project.Factory.JpaFactory;
 import com.company.project.HibernateDAO.BookHibernateDAO;
 import com.company.project.HibernateDAO.IssueHibernateDAO;
 import com.company.project.HibernateDAO.UserHibernateDAO;
@@ -12,6 +13,9 @@ import com.company.project.Models.UserDTO;
 import org.apache.catalina.User;
 import org.junit.jupiter.api.*;
 
+import javax.persistence.EntityManager;
+import javax.swing.text.html.parser.Entity;
+import javax.validation.constraints.AssertTrue;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -35,7 +39,7 @@ public class IssueHibernateDAOTest {
     private static List<IssueDTO> listOfReservationsByB1 = new LinkedList<>();
 
     @BeforeAll
-    static void init() {
+      static void init() {
         b1 = new BookDTO("1b", "1b", "1b", BookDTO.rentalTime.SEVENDAYS, 1);
         b2 = new BookDTO("2b", "2b", "2b", BookDTO.rentalTime.SEVENDAYS, 2);
         b3 = new BookDTO("3b", "3b", "3b", BookDTO.rentalTime.ONEDAY, 3);
@@ -118,16 +122,7 @@ public class IssueHibernateDAOTest {
 
 
     @AfterAll
-    static void clean() {
-        bookJpaDAO = new BookHibernateDAO();
-        bookJpaDAO.remove(b1);
-        bookJpaDAO.remove(b2);
-        bookJpaDAO.remove(b3);
-
-        userJpaDAO = new UserHibernateDAO();
-        userJpaDAO.remove(u1);
-        userJpaDAO.remove(u2);
-        userJpaDAO.remove(u3);
+     static void clean() {
 
         issueJpaDAO = new IssueHibernateDAO();
 
@@ -154,6 +149,18 @@ public class IssueHibernateDAOTest {
         issueJpaDAO.remove(i6);
         b1.removeIssue(i6);
         u1.removeIssue(i6);
+
+        bookJpaDAO = new BookHibernateDAO();
+        bookJpaDAO.remove(b1);
+        bookJpaDAO.remove(b2);
+        bookJpaDAO.remove(b3);
+
+        userJpaDAO = new UserHibernateDAO();
+        userJpaDAO.remove(u1);
+        userJpaDAO.remove(u2);
+        userJpaDAO.remove(u3);
+
+
 
 
     }
@@ -237,6 +244,37 @@ public class IssueHibernateDAOTest {
         listOfAllReservations.sort(comparator);
 
         assertTrue(result.equals(listOfAllReservations));
+
+    }
+
+    @Test
+    void getIssueWithBookAndUser() {
+        BookJpaDAO bookJpaDAO = new BookHibernateDAO();
+        UserJpaDAO userJpaDAO = new UserHibernateDAO();
+        IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
+
+        BookDTO bookDTO = bookJpaDAO.get(b1.getIdBook());
+        UserDTO userDTO = userJpaDAO.get(u1.getIdUser());
+
+        IssueDTO issueDTO = new IssueDTO(bookDTO, userDTO, null, LocalDateTime.now(), null);
+
+        issueJpaDAO.add(issueDTO);
+        System.out.println(issueDTO);
+        IssueDTO afterIssue = issueJpaDAO.get(issueDTO.getIdIssue());
+        System.out.println(afterIssue);
+        System.out.println(issueDTO);
+
+       assertTrue(afterIssue.equals(issueDTO));
+
+
+
+
+        long id = issueDTO.getIdIssue();
+
+        issueJpaDAO.remove(afterIssue);
+
+        assertTrue(issueJpaDAO.get(id)==null);
+
 
     }
 }

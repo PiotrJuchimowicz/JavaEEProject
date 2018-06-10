@@ -110,12 +110,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 
-        //JESLI CHCE USUWAC ISSUE JAKO PIERWSZE MUSZA BYC TE 2 LINIJKI PO USUNIECIU  ISSUE !!!!!!!!
-        issueJpaDAO.remove(issueDTO);
-        userDTO.removeIssue(issueDTO);
-        bookDTO.removeIssue(issueDTO);
-        userJpaDAO.remove(userDTO);
-        bookJpaDAO.remove(bookDTO);
+
+        issueJpaDAO.remove(afterIssue);
+        userJpaDAO.remove(userJpaDAO.get(userDTO.getIdUser()));
+        bookJpaDAO.remove(bookJpaDAO.get(bookDTO.getIdBook()));
 
 
 

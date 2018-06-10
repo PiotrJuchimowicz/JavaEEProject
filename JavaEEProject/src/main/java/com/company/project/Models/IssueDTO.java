@@ -1,5 +1,10 @@
 package com.company.project.Models;
 
+import com.company.project.HibernateDAO.BookHibernateDAO;
+import com.company.project.HibernateDAO.UserHibernateDAO;
+import com.company.project.JpaDAO.BookJpaDAO;
+import com.company.project.JpaDAO.UserJpaDAO;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -10,10 +15,10 @@ public class IssueDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idIssue;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idBook")
     private BookDTO book;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser")
     private UserDTO user;
 
@@ -96,6 +101,8 @@ public class IssueDTO {
                 ", returnDate=" + returnDate +
                 '}';
     }
+
+
 
     @Override
     public boolean equals(Object o)
