@@ -1039,27 +1039,26 @@
     <column id="252" parent="229" name="email">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-      <DefaultExpression>&apos;1&apos;</DefaultExpression>
+      <DefaultExpression>&apos;e&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="253" parent="229" name="enabled">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <DefaultExpression>&apos;1&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="254" parent="229" name="name">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-      <DefaultExpression>&apos;1&apos;</DefaultExpression>
+      <DefaultExpression>&apos;name&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="255" parent="229" name="password">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;password&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="256" parent="229" name="payment">
@@ -1072,8 +1071,7 @@
     <column id="257" parent="229" name="surname">
       <Position>7</Position>
       <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-      <DefaultExpression>&apos;1&apos;</DefaultExpression>
+      <DefaultExpression>&apos;surname&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="258" parent="229" name="username">

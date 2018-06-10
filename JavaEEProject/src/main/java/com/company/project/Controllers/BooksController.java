@@ -11,9 +11,12 @@ import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.apache.taglibs.standard.tag.common.fmt.RequestEncodingSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -200,33 +203,38 @@ public class BooksController {
         return "book-get-title";
     }
 
-//DO TEGO NIE MA WIDOKU i to nie działaaaa
-    @RequestMapping("/{id}/reservation")
-    public String bookReservation(@PathVariable String id){
 
+    @RequestMapping("/reservation/{id}")
+    public String bookReservation(@PathVariable long id ){
+//TODO update number of copies !!!!!!
+        //TODO ensure username unique !!!!!! (method)
+
+           //biore id
+        long userId = LoginController.getUserId();  //METODA ZWRACAJACA ID USERA KTORY JEST OBECNIE ZALOGOWANY
+        //pobieram usera z bazki
         UserJpaDAO userJpaDAO = new UserHibernateDAO();
+        UserDTO user = userJpaDAO.get(userId);
+
+        //biore id ksiazki i pobieram ksiazke z bazki
+        BookDTO book = bookJpaDAO.get(id);
+        //odejmuje książke żeby nikt inny nie mógł zarezerwować ( o ile jeszcze jakaś jest)
+        if(book.getNumberOfCopies()>0)
+            book.setNumberOfCopies(book.getNumberOfCopies()-1);
+
+        //robie issue i dodaje do bazki
         IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
-
-        BookDTO book = bookJpaDAO.get(Long.parseLong(id));
-        UserDTO user = userJpaDAO.get(1); //jeszcze tego nie umiem pobrać ale ogarne
-
         IssueDTO issueDTO = new IssueDTO(book,user,LocalDateTime.now(),null , null);
         issueJpaDAO.add(issueDTO);
 
         return "book-reservation";
+
     }
 
-    @RequestMapping("/{id}/hire")
-    public String bookHire(@PathVariable String id){
-
-        //trzeba sprawdzić czy książka była wcześniej zarezerwowana
-        //najlepiej poszukać jakoś po id
-        //potrzebna metoda sprawdzająca czy osoba wypożyczająca daną książkę
-        //wcześniej ją zarezerwowała
-
-        //czyli czy istnieje już issue tej książki dla tej osoby z reservationDate not null
+    @RequestMapping("/hire")
+    public String bookHire(){
 
 
-        return "book-hire";
+
+        return "home";
     }
 }

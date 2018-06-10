@@ -1,18 +1,15 @@
 package com.company.project.Controllers;
 
-import com.company.project.HibernateDAO.BookHibernateDAO;
 import com.company.project.HibernateDAO.UserHibernateDAO;
 import com.company.project.JpaDAO.UserJpaDAO;
-import com.company.project.Models.IssueDTO;
+import com.company.project.Models.AuthoritiesDTO;
 import com.company.project.Models.UserDTO;
-import com.company.project.Models.authorities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -37,11 +34,11 @@ public class UsersController {
         userJpaDAO.remove(userJpaDAO.get(id));
     }
 
-  // tu trzeba zmienić na authorities
+  // tu trzeba zmienić na AuthoritiesDTO
   //Z: Służy do stworzenia listy do wybierania opcji
     @ModelAttribute("roles")
-    public authorities.Role[] roles(){
-        return authorities.Role.values();
+    public AuthoritiesDTO.Role[] roles(){
+        return AuthoritiesDTO.Role.values();
     }
 
 

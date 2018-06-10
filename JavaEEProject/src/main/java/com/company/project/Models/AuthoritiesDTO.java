@@ -1,5 +1,6 @@
 package com.company.project.Models;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.junit.jupiter.api.Test;
 import org.springframework.lang.Nullable;
 
@@ -8,10 +9,10 @@ import javax.validation.constraints.Null;
 
 @Entity
 @Table(name = "authorities")
-public class authorities {
+public class AuthoritiesDTO {
 
     public enum Role {
-        CLIENT, ADMIN, EMPLOYEE
+        ROLE_CLIENT, ROLE_ADMIN, ROLE_EMPLOYEE
 
 
     }
@@ -20,7 +21,7 @@ public class authorities {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long authoritiyId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username")
     private UserDTO username;
 
@@ -28,12 +29,12 @@ public class authorities {
     @Enumerated(EnumType.STRING)
     private Role authority;
 
-    public authorities(UserDTO username, Role authority) {
+    public AuthoritiesDTO(UserDTO username, Role authority) {
         this.username = username;
         this.authority = authority;
     }
 
-    public authorities() {
+    public AuthoritiesDTO() {
     }
 
     public long getAuthoritiyId() {
@@ -59,4 +60,6 @@ public class authorities {
     public void setAuthority(Role authority) {
         this.authority = authority;
     }
+
+
 }

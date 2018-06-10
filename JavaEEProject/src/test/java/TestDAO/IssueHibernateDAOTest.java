@@ -44,9 +44,9 @@ public class IssueHibernateDAOTest {
         bookJpaDAO.add(b2);
         bookJpaDAO.add(b3);
 
-        u1 = new UserDTO(null, "1u", 1, "1u", "1u", "1u", "p", 1);
-        u2 = new UserDTO(null, "2u", 1, "2u", "2u", "2u", "p", 2);
-        u3 = new UserDTO(null, "3u", 1, "3u", "3u", "3u", "p", 31);
+        u1 = new UserDTO("1u", 1, "1u", "1u", "1u", "p", 1);
+        u2 = new UserDTO( "2u", 1, "2u", "2u", "2u", "p", 2);
+        u3 = new UserDTO( "3u", 1, "3u", "3u", "3u", "p", 31);
         userJpaDAO = new UserHibernateDAO();
         userJpaDAO.add(u1);
         userJpaDAO.add(u2);

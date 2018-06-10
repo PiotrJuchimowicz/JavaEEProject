@@ -85,10 +85,6 @@
 
     <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}">Przejdź do strony książki</a>  <br>
 
-    <%--JEŻELI LICZBA EGZEMPLARZY JEST WIĘKSZA OD ZERA TO MOŻNA WYPOŻYCZYC--%>
-    <c:if test="${b.getNumberOfCopies() > 0}">
-        <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}"> TU BĘDZIE REZERWOWANIE</a>  <br>
-    </c:if>
 
     <hr>
 </c:forEach>

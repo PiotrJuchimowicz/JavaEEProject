@@ -6,12 +6,10 @@ import com.company.project.HibernateDAO.UserHibernateDAO;
 import com.company.project.JpaDAO.BookJpaDAO;
 import com.company.project.JpaDAO.IssueJpaDAO;
 import com.company.project.JpaDAO.UserJpaDAO;
+import com.company.project.Models.AuthoritiesDTO;
 import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
-import com.company.project.Models.authorities;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -21,7 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
 
 //TODO
  public class UserHibernateDAOTest {
@@ -37,8 +34,8 @@ import static org.junit.jupiter.api.Assertions.*;
         String password = "1234";
         String username = "usernameeeeee";
         double payment = 1000;
-        authorities authorities = null;
-        userDTO = new UserDTO(authorities,username,1,name, surname, email, password, payment );
+
+        userDTO = new UserDTO(username,1,name, surname, email, password, payment );
 
         //czy dziala dodawanie i pobieranie go z powrtoem
         userDao.add(userDTO);
@@ -65,7 +62,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     void CRUDTestForIssue() {
         BookDTO bookDTO = new BookDTO("title", "author", "category", BookDTO.rentalTime.SEVENDAYS, 4);
-        UserDTO userDTO = new UserDTO(null,"username",1,"Name", "Surname", "email", "1", 1000.21 );
+        UserDTO userDTO = new UserDTO("username",1,"Name", "Surname", "email", "1", 1000.21 );
 
         BookJpaDAO bookJpaDAO = new BookHibernateDAO();
         UserJpaDAO userJpaDAO = new UserHibernateDAO();
@@ -145,9 +142,9 @@ import static org.junit.jupiter.api.Assertions.*;
         String email = "anyEmail";
         String password = "1234";
         double payment = 1000;
-        authorities role=null;
+        AuthoritiesDTO role=null;
 
-        user = new UserDTO(role,"username",1,name, surname, email, password, payment);
+        user = new UserDTO("username",1,name, surname, email, password, payment);
 
         //tworze ksiazke
         BookJpaDAO bookDao = new BookHibernateDAO();
@@ -185,9 +182,9 @@ import static org.junit.jupiter.api.Assertions.*;
     void findAllUsersTest() {
         UserJpaDAO userJpaDAO = new UserHibernateDAO();
         UserDTO u1, u2, u3;
-        u1 = new UserDTO(null,"username1",1,"name", "surname", "email", "password", 1);
-        u2 = new UserDTO(null,"username2",1,"name", "surname", "email", "password", 1);
-        u3 = new UserDTO(null,"username3",1,"name", "surname", "email", "password", 1);
+        u1 = new UserDTO("username1",1,"name", "surname", "email", "password", 1);
+        u2 = new UserDTO("username2",1,"name", "surname", "email", "password", 1);
+        u3 = new UserDTO("username3",1,"name", "surname", "email", "password", 1);
 
         //pomocnicza lista
         List<UserDTO> supplementaryList = new LinkedList<>();

@@ -9,8 +9,6 @@ import com.company.project.JpaDAO.UserJpaDAO;
 import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
-import com.company.project.Models.authorities;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +33,7 @@ public class CreateController {
 
         UserJpaDAO userJpaDAO = new UserHibernateDAO();
 
-       // UserDTO user = new UserDTO(authorities.Role.ADMIN,"username1",1,"Iwona", "Strubczewska", "iwona.strubczewska@gmail.com", "100320", 0);
+       // UserDTO user = new UserDTO(AuthoritiesDTO.Role.ROLE_ADMIN,"username1",1,"Iwona", "Strubczewska", "iwona.strubczewska@gmail.com", "100320", 0);
        // userJpaDAO.add(user);
 
 

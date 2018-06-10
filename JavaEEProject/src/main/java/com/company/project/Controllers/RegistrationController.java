@@ -1,8 +1,6 @@
 package com.company.project.Controllers;
 
 import com.company.project.Models.UserDTO;
-import com.company.project.Models.authorities;
-import com.company.project.registration.CrmUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.GrantedAuthority;

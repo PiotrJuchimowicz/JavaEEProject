@@ -2,7 +2,6 @@ package com.company.project.Models;
 
 import com.company.project.HibernateDAO.IssueHibernateDAO;
 import com.company.project.JpaDAO.IssueJpaDAO;
-import org.apache.catalina.User;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -14,46 +13,44 @@ import java.util.List;
 
 @Entity
 @Table(name = "USERS")
-@NamedQueries({@NamedQuery(name = "findAllUsers", query = "Select u From UserDTO  u "),@NamedQuery(name="didHeBorrowThatBook",query = "Select i From IssueDTO  i Where i.user.id=:userId AND i.book.id=:bookId")})
+@NamedQueries({@NamedQuery(name = "findAllUsers", query = "Select u From UserDTO  u "),@NamedQuery(name="didHeBorrowThatBook",query = "Select i From IssueDTO  i Where i.user.idUser=:userId AND i.book.idBook=:bookId")})
 public class UserDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idUser;
 
-    @OneToOne(mappedBy = "username")
-    private authorities authority ;
+    @OneToOne(mappedBy = "username",fetch = FetchType.EAGER)
+   private AuthoritiesDTO authority ;
 
     @Column(nullable = false,unique = true)
     private String username;
 
-    @Column(nullable = false,columnDefinition = "1")
+
     private int enabled;
-    @Column(nullable = false,columnDefinition = "name")
-    @ColumnDefault("name")
+
     private String name ="name";
-    @Column(nullable = false,columnDefinition = "surname")
+
     private String surname="surname";
-    @Column(nullable = false,columnDefinition = "email")
+
     private String email="email";
-    @Column(nullable = false)
+
     private String password;//hasz hasła
-    @Column(nullable = false,columnDefinition = "0")
+
     private double payment = 0;
-    @Enumerated(EnumType.STRING)
+
 
 
 
     //domyslnie pusta lista powiazana z danym userem do ktorej potem bedzie mozna dodawac
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
-
     private List<IssueDTO> issuesOfThisUser = new LinkedList<>();
 
 
     public UserDTO() {
     }
 
-    public UserDTO(authorities authority, String username, int enabled, String name, String surname, String email, String password, double payment) {
-        this.authority = authority;
+    public UserDTO( String username, int enabled, String name, String surname, String email, String password, double payment) {
+
         this.username = username;
         this.enabled = enabled;
         this.name = name;
@@ -82,11 +79,12 @@ public class UserDTO {
     }
 
 
-    public authorities getAuthority() {
+    public AuthoritiesDTO getAuthority() {
         return authority;
-    }
+   }
 
-    public void setAuthority(authorities authority) {
+
+    public void setAuthority(AuthoritiesDTO authority) {
         this.authority = authority;
     }
 
@@ -201,7 +199,7 @@ public class UserDTO {
         if (!(this.surname.equals(userDTO.surname)))
             return false;
         if(this.getAuthority()!=null && userDTO.getAuthority()!=null) {
-            if (!(this.getAuthority().equals(userDTO.getAuthority())))
+           if (!(this.getAuthority().equals(userDTO.getAuthority())))
                 return false;
         }
         if(!(this.username.equals(userDTO.username)))

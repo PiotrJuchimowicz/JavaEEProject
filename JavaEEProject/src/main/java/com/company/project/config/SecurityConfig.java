@@ -1,5 +1,6 @@
 package com.company.project.config;
 
+import com.fasterxml.jackson.databind.Module;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,6 +29,8 @@ import java.util.logging.Logger;
 @ComponentScan(basePackages = "com.company.project")
 @PropertySource("classpath:properties")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+
 
 
     //do trzymania danych przeczytanych z pliku properties
@@ -83,6 +86,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register/registration").permitAll()
                 .antMatchers("/register/processRegistrationForm").permitAll()
                 .antMatchers("/books/getall").permitAll()
+
+                //to trzeba wywalić !!!!! uzywam tylko do sprawdzenia czy dziala, żeby sie nie logowac za każdym razem
+
+                .antMatchers("/issues//findbyid/{id}").permitAll()
+                .antMatchers("/issues/findall").permitAll()
+                .antMatchers("/issues/ofuser/{id)").permitAll()
+                .antMatchers("/issues/ofbook/{id)").permitAll()
+                .antMatchers("/issues/reservation").permitAll()
+                .antMatchers("/issues/reservation/book/{id)").permitAll()
+                .antMatchers("/issues/reservation/user/{id)").permitAll()
+
+                //////
+
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

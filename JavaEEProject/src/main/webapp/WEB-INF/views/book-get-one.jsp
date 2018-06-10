@@ -33,6 +33,11 @@
     ${book.toString()}<br>
     <hr>
 
+
+        <a href="<c:url value='/books/reservation'/>/${book.idBookToString()}"> Zarezerwuj książke, nie martw się, że ktoś Ci ją zabierze przed egzaminem !!!! </a>  <br>
+
+
+
     <a href="<c:url value='/books/removeconfirm'/>/${book.idBookToString()}">Usuń książkę</a> <br>
     <a href="<c:url value='/books/getall'/>">Powrót do listy książek</a> <br>
 

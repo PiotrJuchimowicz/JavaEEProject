@@ -3,33 +3,45 @@ package com.company.project;
 
 import com.company.project.Factory.JpaFactory;
 import com.company.project.HibernateDAO.BookHibernateDAO;
-import com.company.project.HibernateDAO.IssueHibernateDAO;
-import com.company.project.HibernateDAO.UserHibernateDAO;
-import com.company.project.JpaDAO.BookJpaDAO;
-import com.company.project.JpaDAO.IssueJpaDAO;
-import com.company.project.JpaDAO.UserJpaDAO;
-import com.company.project.Models.BookDTO;
-import com.company.project.Models.IssueDTO;
-import com.company.project.Models.UserDTO;
-import com.company.project.Models.authorities;
+import com.company.project.JpaDAO.*;
+import com.company.project.Models.*;
+import com.company.project.HibernateDAO.*;
 
 import javax.persistence.EntityManager;
-import java.awt.print.Book;
 import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.LinkedList;
-import java.util.List;
 
 //W warstwie wyzszej trzeba bedzie przetwarzac haslo na hasz oraz
 // tworzyć powiązania np  dodawać danemu użytkownikowi zamówienie a zamówieniu użytkownika
 //Do tej warstwy trafia obiekt który jest już gotowy do zapisu w bazie
 public class TestMain {
     public static void main(String[] args) {
-        EntityManager entityManager = JpaFactory.getEntityManager();
-        entityManager.close();
-        JpaFactory.closeEntityManagerFactory();
+/*
+       BookDTO bookDTO = new BookDTO("title5","author","category",BookDTO.rentalTime.SEVENDAYS,10);
+        BookJpaDAO bookJpaDAO = new BookHibernateDAO();
+        bookJpaDAO.add(bookDTO);
 
 
 
+        UserDTO  userDTO= new UserDTO("nowyuser5",1,"name","surnama","email","password",0);
+        UserJpaDAO userJpaDAO = new UserHibernateDAO();
+        userJpaDAO.add(userDTO);
+
+        AuthoritiesDTO authority = new AuthoritiesDTO(userJpaDAO.get(userDTO.getIdUser()),AuthoritiesDTO.Role.ROLE_CLIENT);
+        AuthoritiesJpaDao authoritiesJpaDao = new AuthoritiesHibernateDao();
+        authoritiesJpaDao.add(authority);
+
+        IssueDTO issueDTO = new IssueDTO(bookJpaDAO.get(bookDTO.getIdBook()),userJpaDAO.get(userDTO.getIdUser()),LocalDateTime.now(),null,null);
+
+        IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
+        issueJpaDAO.add(issueDTO);
+
+
+
+/*
+
+      EntityManager em = JpaFactory.getEntityManager();
+        em.close();
+       JpaFactory.closeEntityManagerFactory();
+*/
     }
 }
