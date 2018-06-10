@@ -50,7 +50,7 @@ public class CreateController {
         IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
 
         BookDTO bookDTO = bookJpaDAO.get(1);
-        UserDTO userDTO = userJpaDAO.get(1);
+        UserDTO userDTO = userJpaDAO.get(8);
 
         IssueDTO issueDTO = new IssueDTO(bookDTO,userDTO,null, LocalDateTime.now(), null);
         issueJpaDAO.add(issueDTO);

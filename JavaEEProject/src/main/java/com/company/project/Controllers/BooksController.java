@@ -27,6 +27,7 @@ import java.awt.print.Book;
 import java.lang.String;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -68,9 +69,7 @@ public class BooksController {
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
-/*
     @RequestMapping(value="/add", method=RequestMethod.POST)
-<<<<<<< HEAD
     public String submitAdd( BookDTO book, Model m) {
         BookHibernateDAO bdao = new BookHibernateDAO();
 
@@ -98,7 +97,6 @@ public class BooksController {
     //Metoda z walidacją - jak zadziała można zmienić
     /*@RequestMapping(value="/add", method=RequestMethod.POST)
     public String submitAdd (@Valid BookDTO book, Model model, BindingResult bindingResult ){
-=======
     public String submitAdd (@Valid BookDTO book,BindingResult bindingResult, Model model ){
 >>>>>>> 0f7b36e4d0ec9b64c10c939111aee84003f1b093
         BookHibernateDAO bookDAO = new BookHibernateDAO();
@@ -137,22 +135,72 @@ public class BooksController {
         return "book-get-category";
     }
     */
+       // Z: Mój mockup do wybierania z istniejących kategorii
+       // przyadłoby się zrobić SELECTA który wybiera istniejące w bazie kategorie
+       // jak się da to posortować go alfabetycznie
+       @ModelAttribute("categories")
+       public List<String> categories() {
+           //List<String> c = BookJpaDAO.getCategories(); o takie coś mogło by być
+           List<String> c= new ArrayList<>();
+           c.add("śmieszne");
+           c.add("dramat");
+           c.add("komedia");
+           return c;
+       }
+
+    @RequestMapping("/findbycategory") // Z: ten widok służy do wybierania kategorii po której będzemy szukać
+    public String findByCategory() {
+        return "book-find-category";
+    }
+
+    @RequestMapping("/category/{category}")
+    public String getByCategory(@PathVariable String category, Model theModel){
+        List<BookDTO> books = bookJpaDAO.findByCategory(category);
+        theModel.addAttribute("books", books);
+        theModel.addAttribute("category", category); //Z: dodałam żeby można było w tytule napisać jaka to kategoria
+        return "book-get-category";
+    }
+
+
+    // Z: Mój mockup do wybierania z istniejących autorów
+    // przyadłoby się zrobić SELECTA który wybiera istniejących w bazie autorów
+    // jak się da to posortować go alfabetycznie
+    @ModelAttribute("authors")
+    public List<String> authors() {
+        //List<String> a = BookJpaDAO.getAuthors(); o takie coś mogło by być
+        List<String> a = new ArrayList<>();
+        a.add("Fredro");
+        a.add("Żaneta");
+        a.add("Juliusz");
+        return a;
+    }
+
+    @RequestMapping("/findbyauthor") // Z: ten widok służy do wybierania autora po którym będziemy szukać
+    public String findByAuthor() {
+        return "book-find-author";
+    }
+
 
 
     @RequestMapping("/author/{author}")
     public String getByAuthor(@PathVariable String author, Model theModel){
         List<BookDTO> books = bookJpaDAO.findByAuthor(author);
         theModel.addAttribute("books", books);
+        theModel.addAttribute("author", author);
         return "book-get-author";
     }
 
-    @RequestMapping("/title/{title}")
-    public String getByTitle(@PathVariable String title, Model theModel){
+
+    // Tytuły nie znajdują się, jeżeli ejst wpisana tylko część. Musi być wpisany cały tytuł.
+    @RequestMapping("/title") //Z: Musiałam usunąć parametr, bo był problem z odczytywaniem go z formularza
+    public String getByTitle( Model theModel, @RequestParam("t") String title){
         List<BookDTO> books = bookJpaDAO.findByTitle(title);
         theModel.addAttribute("books", books);
+        theModel.addAttribute("title", title); //Z: dodałam żeby móc wyświetlić to w tytule strony
         return "book-get-title";
     }
 
+//DO TEGO NIE MA WIDOKU i to nie działaaaa
     @RequestMapping("/{id}/reservation")
     public String bookReservation(@PathVariable String id){
 

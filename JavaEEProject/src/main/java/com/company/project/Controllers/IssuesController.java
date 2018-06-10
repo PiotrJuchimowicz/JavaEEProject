@@ -40,12 +40,20 @@ public class IssuesController {
 
     @RequestMapping("/findbyid/{id}")
     @ResponseBody
-    public void getById(@PathVariable long id, Model theModel){
+    public IssueDTO getById(@PathVariable long id, Model theModel){
 
         IssueDTO issue = issueJpaDAO.get(id);
+      //  BookDTO bookDTO = issue.getBook();
+      //  UserDTO userDTO = issue.getUser();
+
+      //  issue.setBook(bookDTO);
+      //  issue.setUser(userDTO);
+
+        System.out.println(issue);
         theModel.addAttribute(issue);
 
-        //return issue;
+        return issue;
+
     }
 
     @RequestMapping("/findall")

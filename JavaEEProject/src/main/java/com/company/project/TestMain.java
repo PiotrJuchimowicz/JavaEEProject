@@ -1,6 +1,7 @@
 package com.company.project;
 
 
+import com.company.project.Factory.JpaFactory;
 import com.company.project.HibernateDAO.BookHibernateDAO;
 import com.company.project.HibernateDAO.IssueHibernateDAO;
 import com.company.project.HibernateDAO.UserHibernateDAO;
@@ -10,6 +11,10 @@ import com.company.project.JpaDAO.UserJpaDAO;
 import com.company.project.Models.BookDTO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
+import com.company.project.Models.authorities;
+
+
+import javax.persistence.EntityManager;
 
 import java.awt.print.Book;
 import java.time.LocalDateTime;
@@ -22,8 +27,6 @@ import java.util.List;
 //Do tej warstwy trafia obiekt który jest już gotowy do zapisu w bazie
 public class TestMain {
     public static void main(String[] args) {
-
-
 
 
     }

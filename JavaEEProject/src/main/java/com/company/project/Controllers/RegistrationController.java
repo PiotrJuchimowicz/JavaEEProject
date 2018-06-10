@@ -1,5 +1,7 @@
 package com.company.project.Controllers;
 
+import com.company.project.Models.UserDTO;
+import com.company.project.Models.authorities;
 import com.company.project.registration.CrmUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -22,92 +24,90 @@ import java.util.logging.Logger;
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
-	
-	@Autowired
-	private UserDetailsManager userDetailsManager;
+
+    @Autowired
+    private UserDetailsManager userDetailsManager;
 
 
-	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-	
-	private Logger logger = Logger.getLogger(getClass().getName());
-	
-	@InitBinder //to żeby walidacja działała
-	public void initBinder(WebDataBinder dataBinder) {
-		
-		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
-		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
-	}	
-	
-	@GetMapping("/registration")
-	public String showMyLoginPage(Model theModel) {
-		
-		theModel.addAttribute("crmUser", new CrmUser());
-		
-		return "registration-form";
-		
-	}
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-	@PostMapping("/processRegistrationForm")
-	public String processRegistrationForm(
-				@Valid @ModelAttribute("crmUser") CrmUser theCrmUser,
-				BindingResult theBindingResult,
-				Model theModel) {
-						
-		String userName = theCrmUser.getUserName();
-		
-		logger.info("Rejestracja użytkownika: " + userName);
+    private Logger logger = Logger.getLogger(getClass().getName());
+
+    @InitBinder //to żeby walidacja działała
+    public void initBinder(WebDataBinder dataBinder) {
+
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
+
+    @GetMapping("/registration")
+    public String showMyLoginPage(Model theModel) {
+
+        theModel.addAttribute("user", new UserDTO());
+
+        return "registration-form";
+
+    }
+
+    @PostMapping("/processRegistrationForm")
+    public String processRegistrationForm(
+            @Valid @ModelAttribute("user") UserDTO userDTO,
+            BindingResult theBindingResult,
+            Model theModel) {
 
 
-		if (theBindingResult.hasErrors()) {
+        String userName = userDTO.getUsername();
 
-			theModel.addAttribute("crmUser", new CrmUser());
-			theModel.addAttribute("registrationError", "Pole login/hasło nie moze być puste.");
+        logger.info("Rejestracja użytkownika: " + userName);
 
-			logger.warning("Pole login/hasło nie moze być puste.");
-			return "registration-form";	
-		}
-		
-		// check the database if user already exists
-		boolean userExists = doesUserExist(userName);
-		
-		if (userExists) {
-			theModel.addAttribute("crmUser", new CrmUser());
-			theModel.addAttribute("registrationError", "Użytkownik o podanym id istnieje");
 
-			logger.warning("Użytkownik o podanym id istnieje.");
-			return "registration-form";			
-		}
-		
+        if (theBindingResult.hasErrors()) {
 
-        String encodedPassword = passwordEncoder.encode(theCrmUser.getPassword());
+            theModel.addAttribute("user", new UserDTO());
+            theModel.addAttribute("registrationError", "Pole login/hasło nie moze być puste.");
 
-		// domyslna rola
+            logger.warning("Pole login/hasło nie moze być puste.");
+            return "registration-form";
+        }
+
+        // check the database if user already exists
+        boolean userExists = doesUserExist(userName);
+
+        if (userExists) {
+            theModel.addAttribute("crmUser", new UserDTO());
+            theModel.addAttribute("registrationError", "Użytkownik o podanym id istnieje");
+
+            logger.warning("Użytkownik o podanym id istnieje.");
+            return "registration-form";
+        }
+
+
+        String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+
+        // domyslna rola
         List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_CLIENT");
 
 
         User tempUser = new User(userName, encodedPassword, authorities);
         //zapisanie w bazie
-        userDetailsManager.createUser(tempUser);		
-		
+        userDetailsManager.createUser(tempUser);
+
         logger.info("Udało sie stworzyc użytkownika o id: " + userName);
 
 
+        return "registration-confirmation";
+    }
 
+    private boolean doesUserExist(String userName) {
 
+        logger.info("Sprawdzenie czy istnieje użytkownik o id: " + userName);
 
-        return "registration-confirmation";		
-	}
-	
-	private boolean doesUserExist(String userName) {
-		
-		logger.info("Sprawdzenie czy istnieje użytkownik o id: " + userName);
-		
-		// check the database if the user already exists
-		boolean exists = userDetailsManager.userExists(userName);
-		
-		logger.info("Użytkownik o id: " + userName + ", istnieje: " + exists);
-		
-		return exists;
-	}
+        // check the database if the user already exists
+        boolean exists = userDetailsManager.userExists(userName);
+
+        logger.info("Użytkownik o id: " + userName + ", istnieje: " + exists);
+
+        return exists;
+    }
 
 }

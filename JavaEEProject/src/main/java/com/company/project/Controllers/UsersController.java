@@ -5,6 +5,7 @@ import com.company.project.HibernateDAO.UserHibernateDAO;
 import com.company.project.JpaDAO.UserJpaDAO;
 import com.company.project.Models.IssueDTO;
 import com.company.project.Models.UserDTO;
+import com.company.project.Models.authorities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,18 +24,34 @@ public class UsersController {
     private UserJpaDAO userJpaDAO;
 
 
+    @RequestMapping("/removeconfirm/{id}") //Z: widok pośredni między szczegółami użytkownika a usunięciem
+    public String removeConfirm(@PathVariable long id, Model theModel) {
+        UserDTO user = userJpaDAO.get(id);
+        theModel.addAttribute("user", user);
+        return "user-remove-confirm";
+
+    }
 
     @RequestMapping("/remove/{id}")
-    public void removeUser(@PathVariable long id){
+    public void removeUser(@PathVariable long id) {
         userJpaDAO.remove(userJpaDAO.get(id));
     }
 
-    @RequestMapping(value="/add", method=RequestMethod.GET)
+  // tu trzeba zmienić na authorities
+  //Z: Służy do stworzenia listy do wybierania opcji
+    @ModelAttribute("roles")
+    public authorities.Role[] roles(){
+        return authorities.Role.values();
+    }
+
+
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String loadAddPage(Model model) {
         UserDTO user = new UserDTO();
         model.addAttribute("user", user);
         return "user-add";
     }
+
 
     @RequestMapping(value="/add", method=RequestMethod.POST)
     public String submitAdd (@Valid UserDTO user, Model model, BindingResult bindingResult ){

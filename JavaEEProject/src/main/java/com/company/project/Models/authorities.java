@@ -28,6 +28,14 @@ public class authorities {
     @Enumerated(EnumType.STRING)
     private Role authority;
 
+    public authorities(UserDTO username, Role authority) {
+        this.username = username;
+        this.authority = authority;
+    }
+
+    public authorities() {
+    }
+
     public long getAuthoritiyId() {
         return authoritiyId;
     }

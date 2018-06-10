@@ -46,7 +46,6 @@
 
 
 <hr>
-
 <!-- tylko dla pracowników - dodawanie książki -->
 <security:authorize access="hasRole('EMPLOYEE')">
     <p>
@@ -57,17 +56,41 @@
 <hr>
 
 <h1>Lista zasobów biblioteki</h1>
+<hr><hr>
 
-<%--<a href="<c:url value='views/book-add.jsp'>">Dodaj nową książkę </a> <br>--%>
+<!-- tylko dla pracowników - dodawanie książki -->
+<security:authorize access="hasRole('EMPLOYEE')">
+    <p>
+        <a href="${pageContext.request.contextPath}/books/add">Dodaj ksiazke</a>
+        (tylko dla pracowników!)
+    </p>
+</security:authorize>
 
-
-<c:forEach items="${books}" var="b">
-    <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}"> ${b.getIdBook()}: ${b.getTitle()}
-        - ${b.getAuthor()}</a> <br>
+<hr><hr>
+<a href="<c:url value='/books/findbycategory'/>"> Wyszukaj po kategorii</a> <br>
+<hr><hr>
+<a href="<c:url value='/books/findbyauthor'/>"> Wyszukaj po autorze</a> <br>
+<hr><hr>
+<form action="/books/title/">
+    <input type="text" name="t" placeholder="Podaj tytuł">
+    <input type="submit" value="Szukaj">
+</form>
+<hr><hr>
+<c:if test="${empty books}">
+    Brak książek.
+</c:if>
+<c:forEach items = "${books}" var="b">
+    <h2>${b.getIdBook()}: ${b.getTitle()} - ${b.getAuthor()}</h2>
     ${b.getCategory()}<br>
+
+    <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}">Przejdź do strony książki</a>  <br>
+
+    <%--JEŻELI LICZBA EGZEMPLARZY JEST WIĘKSZA OD ZERA TO MOŻNA WYPOŻYCZYC--%>
+    <c:if test="${b.getNumberOfCopies() > 0}">
+        <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}"> TU BĘDZIE REZERWOWANIE</a>  <br>
+    </c:if>
+
     <hr>
 </c:forEach>
 
-
 </body>
-</html>
