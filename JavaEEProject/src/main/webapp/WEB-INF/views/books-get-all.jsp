@@ -10,54 +10,45 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+
 <head>
-    <title>Książki</title>
-    <style>
-        a:link, a:visited {
-            color: black;
-            text-decoration: underline;
-            cursor: pointer;
-        }
+    <title>Lista zasobów</title>
 
-        a:link:active, a:visited:active {
-            color: black;
-            text-decoration: none;
-        }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    </style>
+    <!-- Reference Bootstrap files -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 </head>
 <body>
 
-<!-- przycisk rejestracja-->
+<!-- TO BEDZIE TYLKO DLA ADMINA -->
+<security:authorize access="hasRole('ADMIN')">
 <div>
     <a href="${pageContext.request.contextPath}/register/registration"
        class="btn btn-primary"
        role="button" aria-pressed="true">
-        Register New User
+        Dodaj użytkownika
     </a>
 </div>
+</security:authorize>
 
 <!-- TO DODAJE PRZYCISK WYLOGUJ -->
+<security:authorize access="hasAnyRole('CLIENT','ADMIN', 'EMPLOYEE')">
 <form:form action="${pageContext.request.contextPath}/logout" method="POST">
 
-    <input type="submit" value="Wyloguj"/>
+    <input CLASS="btn btn-primary" role="button" aria-pressed="true" type="submit" value="Wyloguj"/>
 
 </form:form>
 
-
-<hr>
-<!-- tylko dla pracowników - dodawanie książki -->
-<security:authorize access="hasRole('EMPLOYEE')">
-    <p>
-        <a href="${pageContext.request.contextPath}/books/add">Dodaj ksiazke</a>
-        (tylko dla pracowników!)
-    </p>
 </security:authorize>
-<hr>
-
-<h1>Lista zasobów biblioteki</h1>
-<hr><hr>
-
 <!-- tylko dla pracowników - dodawanie książki -->
 <security:authorize access="hasRole('EMPLOYEE')">
     <p>
@@ -66,11 +57,35 @@
     </p>
 </security:authorize>
 
-<hr><hr>
+
+<div>
+
+    <div class="container" style="margin-top: 50px;"
+         class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
+
+        <div class="panel panel-primary">
+
+            <div class="panel-heading">
+                <div class="panel-title">Lista zasobów biblioteki</div>
+            </div>
+
+            <div style="padding-top: 30px" class="panel-body">
+
+
+
+<!-- tylko dla pracowników - dodawanie książki -->
+<security:authorize access="hasRole('EMPLOYEE')">
+    <p>
+        <a href="${pageContext.request.contextPath}/books/add">Dodaj ksiazke</a>
+        (tylko dla pracowników!)
+    </p>
+</security:authorize>
+
+
 <a href="<c:url value='/books/findbycategory'/>"> Wyszukaj po kategorii</a> <br>
-<hr><hr>
+<hr>
 <a href="<c:url value='/books/findbyauthor'/>"> Wyszukaj po autorze</a> <br>
-<hr><hr>
+<hr>
 <form action="/books/title/">
     <input type="text" name="t" placeholder="Podaj tytuł">
     <input type="submit" value="Szukaj">
@@ -80,13 +95,21 @@
     Brak książek.
 </c:if>
 <c:forEach items = "${books}" var="b">
-    <h2>${b.getIdBook()}: ${b.getTitle()} - ${b.getAuthor()}</h2>
+                <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}">  <h4>${b.getIdBook()}: ${b.getTitle()} - ${b.getAuthor()}</h4></a>
     ${b.getCategory()}<br>
 
-    <a href="<c:url value='/books/findbyid'/>/${b.idBookToString()}">Przejdź do strony książki</a>  <br>
 
 
     <hr>
 </c:forEach>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 
 </body>
+</html>

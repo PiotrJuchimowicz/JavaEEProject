@@ -86,18 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register/registration").permitAll()
                 .antMatchers("/register/processRegistrationForm").permitAll()
                 .antMatchers("/books/getall").permitAll()
-
-                //to trzeba wywalić !!!!! uzywam tylko do sprawdzenia czy dziala, żeby sie nie logowac za każdym razem
-
-                .antMatchers("/issues//findbyid/{id}").permitAll()
-                .antMatchers("/issues/findall").permitAll()
-                .antMatchers("/issues/ofuser/{id)").permitAll()
-                .antMatchers("/issues/ofbook/{id)").permitAll()
-                .antMatchers("/issues/reservation").permitAll()
-                .antMatchers("/issues/reservation/book/{id)").permitAll()
-                .antMatchers("/issues/reservation/user/{id)").permitAll()
-
-                //////
+                .antMatchers("/books/findbyid/{id}").permitAll()
 
                 .anyRequest().authenticated()
                 .and()

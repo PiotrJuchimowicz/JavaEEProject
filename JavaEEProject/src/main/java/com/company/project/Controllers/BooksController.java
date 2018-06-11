@@ -207,7 +207,7 @@ public class BooksController {
     @RequestMapping("/reservation/{id}")
     public String bookReservation(@PathVariable long id ){
 //TODO update number of copies !!!!!!
-        //TODO ensure username unique !!!!!! (method)
+// TODO ensure username unique !!!!!! (method)
 
            //biore id
         long userId = LoginController.getUserId();  //METODA ZWRACAJACA ID USERA KTORY JEST OBECNIE ZALOGOWANY
@@ -221,6 +221,8 @@ public class BooksController {
         if(book.getNumberOfCopies()>0)
             book.setNumberOfCopies(book.getNumberOfCopies()-1);
 
+        bookJpaDAO.update(book);
+
         //robie issue i dodaje do bazki
         IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
         IssueDTO issueDTO = new IssueDTO(book,user,LocalDateTime.now(),null , null);
@@ -230,11 +232,17 @@ public class BooksController {
 
     }
 
-    @RequestMapping("/hire")
-    public String bookHire(){
+    @RequestMapping("/borrow/{id}")
+    public String borrowBook(@PathVariable long id, Model theModel){
 
+        IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
+        IssueDTO issue = issueJpaDAO.get(id);
 
+        issue.setIssueDate(LocalDateTime.now());
+        issueJpaDAO.update(issue);
 
-        return "home";
+        theModel.addAttribute(issue);
+
+        return "borrow-if-reserved";
     }
 }

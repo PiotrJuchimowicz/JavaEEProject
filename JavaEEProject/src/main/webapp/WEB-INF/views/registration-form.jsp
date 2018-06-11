@@ -1,12 +1,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <!doctype html>
 <html lang="en">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
 	
-	<title>Register New User Form</title>
+	<title>Rejestracja</title>
 	
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -90,13 +91,25 @@
 
 							<form:input path="surname" placeholder="surneme" class="form-control" />
 						</div>
-
+						<security:authorize access="hasAnyRole('ADMIN', 'EMPLOYEE')">
 						<div style="margin-bottom: 25px" class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
 
 							<form:input path="payment" placeholder="payment" class="form-control" />
 						</div>
 
+						</security:authorize>
+
+						<security:authorize access="hasRole('ADMIN')">
+
+						<div style="margin-bottom: 25px" class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+
+								<form:input path="authority" placeholder="role" class="form-control" />
+							</div>
+
+
+						</security:authorize>
 
 
 

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Iwona
@@ -19,6 +20,10 @@
 Tytuł: ${issue.getBook().getTitle()}<br>
 Autor: ${issue.getBook().getAuthor()}<br>
 Kategoria: ${issue.getBook().getCategory()}<br>
+
+
+<a href="<c:url value='/issues/borrow'/>/${issue.getIdIssueToString()}">Wypożycz</a> <br>
+
 
 <a href="<c:url value='/issues/removeconfirm'/>/${issue.getIdIssueToString()}">Usuń zamówienie</a> <br>
 <a href="<c:url value='/issues/findall'/>">Powrót do listy zamówień</a> <br>
