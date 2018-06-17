@@ -27,4 +27,10 @@ public interface IssueJpaDAO {
 
     List<IssueDTO> findAllReservations();
 
+    IssueDTO findOneReservation(long id);
+
+    List<IssueDTO> findNotReturned();
+
+    List<IssueDTO> findNotReturnedOfUser(long id);
+
 }

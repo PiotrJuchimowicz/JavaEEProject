@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.LinkedList;
@@ -22,6 +23,9 @@ import java.util.List;
 @RequestMapping("/issues")
 public class IssuesController {
 
+
+
+    //TODO UPORZĄDKOWAĆ NAZWY WIDOKÓW BO JEST SYF I SPRAWDZAĆ ZA KAŻDYM RAZEM CZY DZIAŁA, UPORZĄDKOWAĆ TEŻ NAZWY URL
 
     @Autowired
     private IssueJpaDAO issueJpaDAO;
@@ -45,8 +49,6 @@ public class IssuesController {
     public String getById(@PathVariable long id, Model theModel){
 
         IssueDTO issue = issueJpaDAO.get(id);
-        BookDTO bookDTO = issue.getBook();
-
         theModel.addAttribute("issue", issue);
 
         return "issue-get-one";
@@ -65,19 +67,35 @@ public class IssuesController {
 
     }
 
+//for user
+@RequestMapping("/mine") //id usera
+public String getUsersIssues( Model theModel) {
 
-    @RequestMapping("/ofuser/{id)")
-    @ResponseBody
-    public List<IssueDTO> getUsersIssue(@PathVariable long id, Model theModel){
+    long id = LoginController.getUserId();
+    List<IssueDTO> issues = issueJpaDAO.findNotReturnedOfUser(id);
 
-        List<IssueDTO> list = issueJpaDAO.findIssuesByThisUser(id);
-        theModel.addAllAttributes(list);
-        return list;
+    if (issues.size()==0) {
+        theModel.addAttribute("error", "Brak rezerwacji");
+        return "issues-of-user";
+    } else {
+        theModel.addAttribute("issues", issues);
+        return "issues-of-user";
+    }
+}
+
+//for employee
+    @RequestMapping("/ofuser")
+    public String getUsersIssue(@RequestParam("id") long id, Model theModel){
+
+        List<IssueDTO> issues = issueJpaDAO.findIssuesByThisUser(id);
+        theModel.addAttribute("issues", issues);
+
+        return "issues-of-user";
     }
 
 //dziala
-    @RequestMapping("/ofbook/{id}") //id ksiazki
-    public String getBooksIssues(@PathVariable long id, Model theModel){
+    @RequestMapping("/ofbook") //id ksiazki
+    public String getBooksIssues(@RequestParam("id") long id, Model theModel){
 
         List<IssueDTO> issues = issueJpaDAO.findIssuesOfThisBook(id);
         theModel.addAttribute("issues", issues);
@@ -87,7 +105,7 @@ public class IssuesController {
 
 
     //dziala
-    @RequestMapping("/reservation")
+    @RequestMapping("/reservations")
     public String getAllReservation( Model theModel){
 
         List<IssueDTO> list = issueJpaDAO.findAllReservations();
@@ -95,7 +113,7 @@ public class IssuesController {
         return "issue-reservations";
     }
 
-    @RequestMapping("/reservation/book/{id}") //id ksiazki
+    @RequestMapping("/reservations/book/{id}") //id ksiazki
     public String getBooksReservation(@PathVariable long id, Model theModel){
 
         List<IssueDTO> issues = issueJpaDAO.findReservationsOfThisBook(id);
@@ -103,18 +121,59 @@ public class IssuesController {
         return "reservations-of-book" ;
     }
 
-    @RequestMapping("/reservation/user/{id}") //id usera
-    @ResponseBody
-    public List<IssueDTO> getUsersReservation(@PathVariable long id, Model theModel){
 
-        List<IssueDTO> list = issueJpaDAO.findReservationsByThisUser(id);
-        theModel.addAllAttributes(list);
-        return list;
+    //for user
+    @RequestMapping("/reservations/mine")
+    public String getUsersReservation( Model theModel) {
+
+        long id = LoginController.getUserId();
+        List<IssueDTO> issues = issueJpaDAO.findReservationsByThisUser(id);
+
+        if (issues.size()==0) {
+            theModel.addAttribute("error", "Brak rezerwacji");
+            return "issues-reservations-ofuser";
+        } else {
+            theModel.addAttribute("issues", issues);
+            return "issues-reservations-ofuser";
+        }
+    }
+
+
+    //for employee
+
+    @RequestMapping("/reservations/ofuser")
+    public String getUsersReserv(@RequestParam("id") long id, Model theModel){
+
+        List<IssueDTO> issues = issueJpaDAO.findReservationsByThisUser(id);
+        theModel.addAttribute("issues", issues);
+
+        return "issues-reservations-ofuser";
     }
 
 
 
 
+    @RequestMapping("/reservations/findbyid/{id}")
+    public String getOneReservation(@PathVariable long id, Model theModel){
+
+        IssueDTO issue = issueJpaDAO.findOneReservation(id);
+        theModel.addAttribute("issue", issue);
+
+        return "issues-reservations-one";
+
+    }
+
+    @RequestMapping("/notreturned")
+    public String findNotReturned(Model theModel){
+
+        List<IssueDTO> issues = issueJpaDAO.findNotReturned();
+        theModel.addAttribute("issues", issues);
+
+        return "issues-not-returned";
+
+    }
 
 
 }
+
+

@@ -12,10 +12,13 @@
     <title>Kategorie</title>
 </head>
 <body>
+
+
+
     <c:forEach items="${categories}" var="c">
         <a href="<c:url value='/books/category'/>/${c}">${c}</a><br>
     </c:forEach>
     <hr>
-    <a href="<c:url value='/books/getall'/>">Powrót do listy książek</a> <br>
+    <a href="${pageContext.request.contextPath}/books/getall"> Wróć do strony głównej</a> <br>
 </body>
 </html>

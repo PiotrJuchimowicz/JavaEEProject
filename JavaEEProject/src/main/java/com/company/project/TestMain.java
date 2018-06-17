@@ -16,13 +16,13 @@ import java.time.LocalDateTime;
 public class TestMain {
     public static void main(String[] args) {
 /*
-       BookDTO bookDTO = new BookDTO("title5","author","category",BookDTO.rentalTime.SEVENDAYS,10);
+       BookDTO bookDTO = new BookDTO("tit","autor","kategoria",BookDTO.rentalTime.SEVENDAYS,10);
         BookJpaDAO bookJpaDAO = new BookHibernateDAO();
         bookJpaDAO.add(bookDTO);
 
 
 
-        UserDTO  userDTO= new UserDTO("nowyuser5",1,"name","surnama","email","password",0);
+        UserDTO  userDTO= new UserDTO("user",1,"name","surname","email","password",0);
         UserJpaDAO userJpaDAO = new UserHibernateDAO();
         userJpaDAO.add(userDTO);
 
@@ -30,18 +30,27 @@ public class TestMain {
         AuthoritiesJpaDao authoritiesJpaDao = new AuthoritiesHibernateDao();
         authoritiesJpaDao.add(authority);
 
-        IssueDTO issueDTO = new IssueDTO(bookJpaDAO.get(bookDTO.getIdBook()),userJpaDAO.get(userDTO.getIdUser()),LocalDateTime.now(),null,null);
+        IssueDTO issueDTO = new IssueDTO(bookJpaDAO.get(bookDTO.getIdBook()),userJpaDAO.get(userDTO.getIdUser()),LocalDateTime.now(),LocalDateTime.now(),LocalDateTime.now());
 
         IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
         issueJpaDAO.add(issueDTO);
-
-
 
 /*
 
       EntityManager em = JpaFactory.getEntityManager();
         em.close();
        JpaFactory.closeEntityManagerFactory();
-*/
+
+/*
+        UserDTO userDTO = new UserDTO("usteczka",1,"usteczkunik","usteczkunikis","usteczka@usteczkunikis.usti","usteczka",1250);
+        UserJpaDAO userJpaDAO = new UserHibernateDAO();
+        userJpaDAO.add(userDTO);
+
+        AuthoritiesDTO authoritiesDTO = new AuthoritiesDTO(userDTO,AuthoritiesDTO.Role.ROLE_CLIENT);
+        AuthoritiesJpaDao authoritiesJpaDao = new AuthoritiesHibernateDao();
+        authoritiesJpaDao.add(authoritiesDTO);
+
+        System.out.println(userJpaDAO.get(userDTO.getIdUser()).getAuthority().getAuthority());
+  */
     }
 }

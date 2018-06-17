@@ -1,5 +1,7 @@
 package com.company.project.Controllers;
 
+import com.company.project.JpaDAO.AuthoritiesJpaDao;
+import com.company.project.Models.AuthoritiesDTO;
 import com.company.project.Models.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -39,7 +41,7 @@ public class RegistrationController {
     }
 
     @GetMapping("/registration")
-    public String showMyLoginPage(Model theModel) {
+    public String showMyRegistrationPage(Model theModel) {
 
         theModel.addAttribute("user", new UserDTO());
 
@@ -68,7 +70,7 @@ public class RegistrationController {
             return "registration-form";
         }
 
-        // check the database if user already exists
+
         boolean userExists = doesUserExist(userName);
 
         if (userExists) {
@@ -79,12 +81,10 @@ public class RegistrationController {
             return "registration-form";
         }
 
-
         String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
 
-        // domyslna rola
-        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_CLIENT");
-
+        // domyslna rola ( nie ma opcji bez listy, albo ja jej nie znam )
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_ADMIN");
 
         User tempUser = new User(userName, encodedPassword, authorities);
         //zapisanie w bazie
@@ -95,7 +95,6 @@ public class RegistrationController {
 
         return "registration-confirmation";
     }
-
     private boolean doesUserExist(String userName) {
 
         logger.info("Sprawdzenie czy istnieje użytkownik o id: " + userName);

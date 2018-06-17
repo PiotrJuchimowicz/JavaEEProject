@@ -42,7 +42,7 @@ public class UserDTO {
 
 
     //domyslnie pusta lista powiazana z danym userem do ktorej potem bedzie mozna dodawac
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = {CascadeType.REFRESH,CascadeType.REMOVE})
     private List<IssueDTO> issuesOfThisUser = new LinkedList<>();
 
 

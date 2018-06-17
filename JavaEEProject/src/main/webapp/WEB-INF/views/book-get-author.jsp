@@ -12,6 +12,10 @@
     <title>${author}</title>
 </head>
 <body>
+
+
+
+
     <c:if test="${empty books}">
         Nie można znaleźć książek takiego autora.
     </c:if>
@@ -28,6 +32,6 @@
         <hr>
     </c:forEach>
     <hr>
-    <a href="<c:url value='/books/getall'/>">Powrót do listy książek</a> <br>
+    <a href="${pageContext.request.contextPath}/books/getall"> Wróć do strony głównej</a> <br>
 </body>
 </html>

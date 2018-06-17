@@ -24,6 +24,8 @@
     </style>
 </head>
 <body>
+
+
 <title>Książka z kategorii ${book.getCategory()}</title>
 
 <%--<a href="<c:url value='views/book-add.jsp'>">Dodaj nową książkę </a> <br>--%>
@@ -35,5 +37,9 @@
     ${b.getCategory()}<br>
     <hr>
 </c:forEach>
+
+
+<a href="${pageContext.request.contextPath}/books/getall"> Wróć do strony głównej</a>
+
 </body>
 </html>

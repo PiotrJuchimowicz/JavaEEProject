@@ -62,55 +62,17 @@
 
 						<!-- User name -->
 						<div style="margin-bottom: 25px" class="input-group">
-							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span> 
+							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 							
 							<form:input path="username" placeholder="username" class="form-control" />
 						</div>
 
 						<!-- Password -->
 						<div style="margin-bottom: 25px" class="input-group">
-							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
-							
+							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+
 							<form:password path="password" placeholder="password" class="form-control" />
 						</div>
-
-						<div style="margin-bottom: 25px" class="input-group">
-							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-
-							<form:input path="email" placeholder="email" class="form-control" />
-						</div>
-
-						<div style="margin-bottom: 25px" class="input-group">
-							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-
-							<form:input path="name" placeholder="neme" class="form-control" />
-						</div>
-
-						<div style="margin-bottom: 25px" class="input-group">
-							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-
-							<form:input path="surname" placeholder="surneme" class="form-control" />
-						</div>
-						<security:authorize access="hasAnyRole('ADMIN', 'EMPLOYEE')">
-						<div style="margin-bottom: 25px" class="input-group">
-							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-
-							<form:input path="payment" placeholder="payment" class="form-control" />
-						</div>
-
-						</security:authorize>
-
-						<security:authorize access="hasRole('ADMIN')">
-
-						<div style="margin-bottom: 25px" class="input-group">
-								<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-
-								<form:input path="authority" placeholder="role" class="form-control" />
-							</div>
-
-
-						</security:authorize>
-
 
 
 						<div style="margin-top: 10px" class="form-group">						

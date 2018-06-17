@@ -11,6 +11,9 @@
     <title>Error</title>
 </head>
 <body>
+
+
+
     <h2>Wystąpił błąd.</h2>
 </body>
 </html>

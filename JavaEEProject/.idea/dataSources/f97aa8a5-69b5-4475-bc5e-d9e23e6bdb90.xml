@@ -1039,7 +1039,7 @@
     <column id="252" parent="229" name="email">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
-      <DefaultExpression>&apos;e&apos;</DefaultExpression>
+      <DefaultExpression>&apos;email&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="253" parent="229" name="enabled">

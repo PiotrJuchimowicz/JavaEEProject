@@ -13,6 +13,13 @@
 </head>
 <body>
 
+
+
+
+
+
+<a href="${pageContext.request.contextPath}/books/getall"> Wróć do strony głównej</a>
+
 <c:forEach items = "${issues}" var="i">
     <a href="<c:url value='/issues/findbyid'/>/${i.getBook().idBookToString()}"><h3>Zamowienie nr: ${i.getIdIssueToString()}</h3></a>
     <br>
@@ -23,6 +30,8 @@
 
     <hr>
 </c:forEach>
+
+
 
 </body>
 </html>

@@ -48,7 +48,7 @@ public class BooksController {
     }
 
     @RequestMapping("/remove/{id}")
-    public String removeBook(@PathVariable String id){
+    public String removeBook(@PathVariable String id) {
         bookJpaDAO.remove(bookJpaDAO.get(Long.parseLong(id)));
         return "redirect:/books/getall";
     }
@@ -58,45 +58,28 @@ public class BooksController {
         return BookDTO.rentalTime.values();
     }
 
-    @RequestMapping(value="/add", method=RequestMethod.GET)
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String loadAddPage(Model m) {
-        BookDTO book = new BookDTO();
-        m.addAttribute("book", book);
+        //BookDTO book = new BookDTO();
+        m.addAttribute("book", new BookDTO());
         return "book-add";
     }
 
-    @InitBinder
-    public void initBinder(WebDataBinder dataBinder) {
 
-        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
-        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
-    }
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addBook(@Valid @ModelAttribute("book") BookDTO bookDTO,  Model theModel) {
 
-    @RequestMapping(value="/add", method=RequestMethod.POST)
-    public String submitAdd( BookDTO book, Model m) {
-        BookHibernateDAO bdao = new BookHibernateDAO();
-
-        // tu sprawdzenie czy wszystko ok z książką
-        int ifSthWrong = 0; //inkrementacja jeżeli coś jest źle
-        if(book.getAuthor().length()<3) ifSthWrong++;
-        if(book.getTitle().length()<3) ifSthWrong++;
-        if(book.getCategory().length()<3) ifSthWrong++;
-        if(book.getRentalTime() != BookDTO.rentalTime.ONEDAY
-                && book.getRentalTime() != BookDTO.rentalTime.SEVENDAYS
-                && book.getRentalTime() != BookDTO.rentalTime.THREEMONTHS) ifSthWrong++;
-        if(book.getNumberOfCopies() <= 0) ifSthWrong++;
-
-        //jeśli tak to
-        if( ifSthWrong == 0 ) {
-            bdao.add(book);
-            m.addAttribute("message", "Dodanie książki przebiegło pomyślnie.");
+        if ( bookDTO.getAuthor()==null || bookDTO.getTitle()==null || bookDTO.getCategory()==null || bookDTO.getRentalTime()==null || bookDTO.getNumberOfCopies() == 0 ) {
+            theModel.addAttribute("error", "Wszystkie pola muszą być wypełnione");
+            return "book-add";
+        } else {
+            theModel.addAttribute("confirm", "Dodano książkę");
+            bookJpaDAO.add(bookDTO);
+            return "book-add";
         }
-        //jeśli nie to
-        else m.addAttribute("message", "Dodanie książki nie udało się.");
-        return "book-add-response";
     }
-  
-  
+
+
     //Metoda z walidacją - jak zadziała można zmienić
     /*@RequestMapping(value="/add", method=RequestMethod.POST)
     public String submitAdd (@Valid BookDTO book, Model model, BindingResult bindingResult ){
@@ -116,7 +99,7 @@ public class BooksController {
         }
     }*/
 
-    @RequestMapping(value="/getall")
+    @RequestMapping(value = "/getall")
     public String getAll(Model theModel) {
         List<BookDTO> list = bookJpaDAO.findAllBooks();
         theModel.addAttribute("books", list);
@@ -130,26 +113,26 @@ public class BooksController {
         return "book-get-one";
     }
 
-       /*
-    @RequestMapping("/category/{category}")
-    public String getByCategory(@PathVariable String category, Model theModel){
-        List<BookDTO> books = bookJpaDAO.findByCategory(category);
-        theModel.addAttribute("books", books);
-        return "book-get-category";
+    /*
+ @RequestMapping("/category/{category}")
+ public String getByCategory(@PathVariable String category, Model theModel){
+     List<BookDTO> books = bookJpaDAO.findByCategory(category);
+     theModel.addAttribute("books", books);
+     return "book-get-category";
+ }
+ */
+    // Z: Mój mockup do wybierania z istniejących kategorii
+    // przyadłoby się zrobić SELECTA który wybiera istniejące w bazie kategorie
+    // jak się da to posortować go alfabetycznie
+    @ModelAttribute("categories")
+    public List<String> categories() {
+        //List<String> c = BookJpaDAO.getCategories(); o takie coś mogło by być
+        List<String> c = new ArrayList<>();
+        c.add("śmieszne");
+        c.add("dramat");
+        c.add("komedia");
+        return c;
     }
-    */
-       // Z: Mój mockup do wybierania z istniejących kategorii
-       // przyadłoby się zrobić SELECTA który wybiera istniejące w bazie kategorie
-       // jak się da to posortować go alfabetycznie
-       @ModelAttribute("categories")
-       public List<String> categories() {
-           //List<String> c = BookJpaDAO.getCategories(); o takie coś mogło by być
-           List<String> c= new ArrayList<>();
-           c.add("śmieszne");
-           c.add("dramat");
-           c.add("komedia");
-           return c;
-       }
 
     @RequestMapping("/findbycategory") // Z: ten widok służy do wybierania kategorii po której będzemy szukać
     public String findByCategory() {
@@ -157,7 +140,7 @@ public class BooksController {
     }
 
     @RequestMapping("/category/{category}")
-    public String getByCategory(@PathVariable String category, Model theModel){
+    public String getByCategory(@PathVariable String category, Model theModel) {
         List<BookDTO> books = bookJpaDAO.findByCategory(category);
         theModel.addAttribute("books", books);
         theModel.addAttribute("category", category); //Z: dodałam żeby można było w tytule napisać jaka to kategoria
@@ -184,9 +167,8 @@ public class BooksController {
     }
 
 
-
     @RequestMapping("/author/{author}")
-    public String getByAuthor(@PathVariable String author, Model theModel){
+    public String getByAuthor(@PathVariable String author, Model theModel) {
         List<BookDTO> books = bookJpaDAO.findByAuthor(author);
         theModel.addAttribute("books", books);
         theModel.addAttribute("author", author);
@@ -196,7 +178,7 @@ public class BooksController {
 
     // Tytuły nie znajdują się, jeżeli ejst wpisana tylko część. Musi być wpisany cały tytuł.
     @RequestMapping("/title") //Z: Musiałam usunąć parametr, bo był problem z odczytywaniem go z formularza
-    public String getByTitle( Model theModel, @RequestParam("t") String title){
+    public String getByTitle(Model theModel, @RequestParam("t") String title) {
         List<BookDTO> books = bookJpaDAO.findByTitle(title);
         theModel.addAttribute("books", books);
         theModel.addAttribute("title", title); //Z: dodałam żeby móc wyświetlić to w tytule strony
@@ -205,11 +187,11 @@ public class BooksController {
 
 
     @RequestMapping("/reservation/{id}")
-    public String bookReservation(@PathVariable long id ){
+    public String bookReservation(@PathVariable long id, Model theModel) {
 //TODO update number of copies !!!!!!
 // TODO ensure username unique !!!!!! (method)
-
-           //biore id
+//TODO panel użytkownika jakis, zmienianie jego danych itp, jego wypożyczenia, nie wiem co jeszcze ?
+        //biore id
         long userId = LoginController.getUserId();  //METODA ZWRACAJACA ID USERA KTORY JEST OBECNIE ZALOGOWANY
         //pobieram usera z bazki
         UserJpaDAO userJpaDAO = new UserHibernateDAO();
@@ -218,31 +200,71 @@ public class BooksController {
         //biore id ksiazki i pobieram ksiazke z bazki
         BookDTO book = bookJpaDAO.get(id);
         //odejmuje książke żeby nikt inny nie mógł zarezerwować ( o ile jeszcze jakaś jest)
-        if(book.getNumberOfCopies()>0)
-            book.setNumberOfCopies(book.getNumberOfCopies()-1);
 
-        bookJpaDAO.update(book);
+        if (book.getNumberOfCopies() > 0) {
 
-        //robie issue i dodaje do bazki
-        IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
-        IssueDTO issueDTO = new IssueDTO(book,user,LocalDateTime.now(),null , null);
-        issueJpaDAO.add(issueDTO);
+            theModel.addAttribute("book", book);
+            theModel.addAttribute("confirm", "Książka zarezerwowana.");
+            book.setNumberOfCopies(book.getNumberOfCopies() - 1);
 
-        return "book-reservation";
+            bookJpaDAO.update(book);
+
+            //robie issue i dodaje do bazki
+            IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
+            IssueDTO issueDTO = new IssueDTO(book, user, LocalDateTime.now(), null, null);
+            issueJpaDAO.add(issueDTO);
+
+            return "book-get-one";
+        } else {
+            theModel.addAttribute("book", book);
+            theModel.addAttribute("ReservationError", "Ta książka jest już niedostępna.");
+            return "book-get-one";
+        }
+
 
     }
 
     @RequestMapping("/borrow/{id}")
-    public String borrowBook(@PathVariable long id, Model theModel){
+    public String borrowBook(@PathVariable long id, Model theModel) {
+
 
         IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
         IssueDTO issue = issueJpaDAO.get(id);
 
-        issue.setIssueDate(LocalDateTime.now());
-        issueJpaDAO.update(issue);
-
-        theModel.addAttribute(issue);
-
-        return "borrow-if-reserved";
+        if (issue.getIssueDate() != null) {
+            theModel.addAttribute("issue", issue);
+            theModel.addAttribute("borrowError", "Ta książka została już wypożyczona.");
+        } else {
+            theModel.addAttribute("issue", issue);
+            theModel.addAttribute("borrowConfirm", "Wypożyczono książkę.");
+            issue.setIssueDate(LocalDateTime.now());
+            issueJpaDAO.update(issue);
+        }
+        return "issues-reservations-one";
     }
+
+    @RequestMapping("/return/{id}")
+    public String returnBook(@PathVariable long id, Model theModel) {
+        IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
+        IssueDTO issue = issueJpaDAO.get(id);
+        BookDTO book = bookJpaDAO.get(issue.getBook().getIdBook());
+
+        if (issue.getReturnDate() != null) {
+
+            theModel.addAttribute("issue", issue);
+            theModel.addAttribute("returnError", "Ta książka została już wcześniej zwrócona.");
+            return "issue-get-one";
+        } else {
+            book.setNumberOfCopies(book.getNumberOfCopies() + 1);
+            issue.setReturnDate(LocalDateTime.now());
+            issueJpaDAO.update(issue);
+            bookJpaDAO.update(book);
+
+            theModel.addAttribute("issue", issue);
+            theModel.addAttribute("confirm", "Zwrócono książkę");
+            return "issue-get-one";
+        }
+    }
+
+
 }

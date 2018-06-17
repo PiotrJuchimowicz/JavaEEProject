@@ -8,6 +8,9 @@
 
 	<h2>Rejestracja przebiegła pomyślnie !!!</h2>
 
+	Pozostałe informacje uzupełnij w swoim panelu użytkownika :)
+
+
 	<hr>
 	
 	<a href="${pageContext.request.contextPath}/loginPage">Zaloguj się na swoje konto</a>

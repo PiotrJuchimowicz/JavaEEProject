@@ -1,15 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Zuzia
-  Date: 02.06.2018
-  Time: 18:44
+  User: Iwona
+  Date: 14.06.2018
+  Time: 13:54
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Użytkownik nr ${user.getIdUser()}</title>
+    <title>Panel użytkownika</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -26,33 +26,33 @@
 <body>
 
 
+
+
+
 <div>
 
-
-    <div class="container" style="margin-top: 50px;"
-         class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
+    <div id="userspanel" style="margin-top: 60px;"
+         class="mainbox col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-8">
 
         <div class="panel panel-primary">
 
             <div class="panel-heading">
-                <div class="panel-title"><h3>Użytkownik nr ${user.getIdUser()}</h3></div>
+                <div class="panel-title">Panel użytkownika </div>
             </div>
 
-            <div style="padding-top: 30px" class="panel-body">
+            <div style="padding-top: 50px" class="panel-body">
+                <img src="https://cdn-img.easyicon.net/png/5580/558013.gif" alt="brak"  class="rounded float-right" >
 
+<br>
 
-                Imię:${user.getName()} <br>
-                Nazwisko:${user.getSurname()}<br>
-                Adres e-mail:${user.getEmail()}<br>
-                Dług:${user.getPayment()} zł<br>
+                <h3>Imie :</h3> ${user.getName()}<br>
+                <h3>Nazwisko: </h3>${user.getSurname()}<br>
+                <h3>E-mail: </h3> ${user.getEmail()}<br>
 
+                <h3>Do zapłaty:</h3> ${user.getPayment()} zł <br>
+<br>
+<a CLASS="btn btn-primary" role="button" aria-pressed="true" href="${pageContext.request.contextPath}/users/userspanel/edit"> Edytuj dane </a>
 
-                <a href="<c:url value='/users/removeconfirm'/>/${user.getIdUser()}">Usuń użytkownika</a> <br>
-
-
-                Edytuj użytkownika
-
-                <a href="${pageContext.request.contextPath}/books/getall"> Wróć do strony głównej</a>
 
             </div>
 
@@ -61,6 +61,8 @@
     </div>
 
 </div>
+
+
 
 </body>
 </html>

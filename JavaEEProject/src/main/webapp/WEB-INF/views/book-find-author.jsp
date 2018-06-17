@@ -16,6 +16,6 @@
         <a href="<c:url value='/books/author'/>/${a}">${a}</a><br>
     </c:forEach>
     <hr>
-    <a href="<c:url value='/books/getall'/>">Powrót do listy książek</a> <br>
+    <a href="${pageContext.request.contextPath}/books/getall"> Wróć do strony głównej</a> <br>
 </body>
 </html>

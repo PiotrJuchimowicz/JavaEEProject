@@ -1,23 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Zuzia
-  Date: 01.06.2018
-  Time: 23:24
+  User: Iwona
+  Date: 12.06.2018
+  Time: 11:50
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-
 <head>
-
-    <title>Książka nr ${book.getIdBook()}</title>
-
-    <style>
-        .failed {
-            color: red;
-        }
-    </style>
+    <title>Wypożyczenia użytkownika </title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,12 +20,11 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
-
 <body>
+
 
 
 
@@ -46,35 +37,39 @@
         <div class="panel panel-primary">
 
             <div class="panel-heading">
-                <div class="panel-title"> Książka nr ${book.getIdBook()} </div>
+                <div class="panel-title"><h3>Lista wypożyczeń</h3></div>
             </div>
 
             <div style="padding-top: 30px" class="panel-body">
 
 
-                <h2>${book.getTitle()}</h2>
-                <h3>${book.getAuthor()}</h3>
-                Kategoria: ${book.getCategory()}<br>
-                Maksymalny czas wypożyczenia: ${book.getRentalTime()}<br>
-                Ilość egzemplarzy: ${book.getNumberOfCopies()}<br>
 
 
-                <br>
+            <c:forEach items = "${issues}" var="i">
+    <h4>Wypożyczenie nr: ${i.getIdIssueToString()}</h4>
+    <br>
+    Data wypozyczenia : ${i.getIssueDate()}<br>
+    Data rezerwacji : ${i.getReservationDate()}<br>
+    Data zwrotu : ${i.getReturnDate()}<br>
+    <br>
+    Książka nr:${i.getBook().getIdBook()} <br>
+    tytuł: ${i.getBook().getTitle()}<br>
+    autor: ${i.getBook().getAuthor()}<br>
+    kategoria: ${i.getBook().getCategory()}<br>
 
+    <br>
 
                 <div class="form-group">
                     <div class="col-xs-15">
                         <div>
 
 
-                            <c:if test="${ReservationError != null}">
+                            <c:if test="${returnError != null}">
 
                                 <div class="alert alert-danger col-xs-offset-1 col-xs-10">
-                                    <a href="#" class="close" data-dissmiss="alert"></a>
-                                        ${ReservationError}
+                                        ${returnError}
                                 </div>
 
-                                <br><br> <br>
                             </c:if>
 
                             <c:if test="${confirm != null}">
@@ -83,22 +78,17 @@
                                         ${confirm}
                                 </div>
 
-                                <br><br> <br>
                             </c:if>
 
 
                         </div>
                     </div>
                 </div>
-
-
-                <a href="<c:url value='/books/reservation'/>/${book.idBookToString()}"> Zarezerwuj książke, nie martw
-                    się, że ktoś Ci ją zabierze przed egzaminem !!!! </a> <br>
-
-
-                <a href="<c:url value='/books/removeconfirm'/>/${book.idBookToString()}">Usuń książkę</a> <br>
-
-                <a href="${pageContext.request.contextPath}/books/getall"> Wróć do strony głównej</a> <br>
+                <br><br> <br>
+                <a href="<c:url value='/books/return'/>/${i.getIdIssueToString()}">Zwróć książkę </a> <br>
+    <hr>
+</c:forEach>
+                <a href="${pageContext.request.contextPath}/books/getall"> Wróć do strony głównej</a>
 
             </div>
 

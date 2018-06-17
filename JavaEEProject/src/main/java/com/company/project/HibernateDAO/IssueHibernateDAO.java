@@ -135,5 +135,41 @@ public class IssueHibernateDAO implements IssueJpaDAO {
         return list;
     }
 
+    @Override
+    public IssueDTO findOneReservation(long id) {
+
+        EntityManager em = JpaFactory.getEntityManager();
+        TypedQuery<IssueDTO> query = em.createNamedQuery("findReservationById", IssueDTO.class);
+        query.setParameter("id", id);
+        IssueDTO i = query.getSingleResult();
+        em.close();
+        JpaFactory.closeEntityManagerFactory();
+
+        return i;
+    }
+
+    @Override
+    public List<IssueDTO> findNotReturned() {
+        EntityManager em = JpaFactory.getEntityManager();
+        TypedQuery<IssueDTO> query = em.createNamedQuery("findNotReturned", IssueDTO.class);
+        List<IssueDTO> list = query.getResultList();
+        em.close();
+        JpaFactory.closeEntityManagerFactory();
+
+        return list;
+    }
+
+    @Override
+    public List<IssueDTO> findNotReturnedOfUser(long id) {
+        EntityManager em = JpaFactory.getEntityManager();
+        TypedQuery<IssueDTO> query = em.createNamedQuery("findNotReturnedOfUser", IssueDTO.class);
+        query.setParameter("id",id);
+        List<IssueDTO> list = query.getResultList();
+        em.close();
+        JpaFactory.closeEntityManagerFactory();
+
+        return list;
+    }
+
 
 }

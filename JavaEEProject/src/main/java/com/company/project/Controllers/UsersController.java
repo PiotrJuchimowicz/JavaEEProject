@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.*;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -26,12 +27,14 @@ public class UsersController {
         UserDTO user = userJpaDAO.get(id);
         theModel.addAttribute("user", user);
         return "user-remove-confirm";
-
     }
 
     @RequestMapping("/remove/{id}")
-    public void removeUser(@PathVariable long id) {
+    public String removeUser(@PathVariable long id) {
+
         userJpaDAO.remove(userJpaDAO.get(id));
+
+        return "redirect:/users/findall";
     }
 
   // tu trzeba zmienić na AuthoritiesDTO
@@ -64,34 +67,6 @@ public class UsersController {
     }
 
 
-
-    /*
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public void addBook(HttpServletRequest request , Model theModel) {
-
-        try {
-
-            String name = request.getParameter("name");
-            String surname = request.getParameter("surname");
-            String email = request.getParameter("email");
-            String role = request.getParameter("role");
-            Double payment = Double.parseDouble(request.getParameter("payment"));
-            UserDTO.Role userRole = UserDTO.Role.valueOf(role); // przy tym pewnie bedzie wyjatek
-            List<IssueDTO> list = null;
-
-            //TU TRZEBA WRZUCIĆ METODE DO ROBIENIA HASŁA , tymczasowo hasło 1;
-            int password = 1;
-            UserDTO user = new UserDTO(name,surname,email,password,payment, userRole, list);
-            userJpaDAO.add(user);
-            theModel.addAttribute(user);
-
-        } catch(Exception e){
-            //jakas obsluga
-        }
-
-    }
-    */
-
     @RequestMapping("/findbyid/{id}")
     public String getById(@PathVariable long id, Model theModel){
         UserDTO user = userJpaDAO.get(id);
@@ -107,6 +82,37 @@ public class UsersController {
         return "users-get-all";
     }
 
+
+    @RequestMapping("/userspanel")
+    public String usersPanel(Model theModel){
+
+        long id = LoginController.getUserId(); //pobiera id z aktualnej sesji
+        UserDTO user = userJpaDAO.get(id);
+
+        theModel.addAttribute("user", user);
+
+        return "users-panel";
+    }
+
+    @RequestMapping(value = "/userspanel/edit", method = RequestMethod.GET)
+    public String editData(Model theModel){
+
+        theModel.addAttribute("user", new UserDTO());
+
+        return "users-edit";
+    }
+
+    @RequestMapping(value = "/userspanel/edit", method = RequestMethod.POST)
+    public String editDateConfirm(@Valid @ModelAttribute("user") UserDTO userDTO,  Model theModel){
+
+        long id = LoginController.getUserId();
+        userDTO = userJpaDAO.get(id);
+        theModel.addAttribute("confirm", "Dodano książkę");
+        userJpaDAO.update(userDTO);
+
+
+        return "users-edit";
+    }
 
 
 

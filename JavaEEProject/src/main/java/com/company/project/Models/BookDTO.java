@@ -48,7 +48,7 @@ public class BookDTO {
 
 
     //domyslnie pusta lista powiazana z dana ksiazka(do ktorej potem bedzie mozna dodawac)
-    @OneToMany(mappedBy = "book",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book",fetch = FetchType.LAZY,cascade = {CascadeType.REFRESH,CascadeType.REMOVE})
     private List<IssueDTO> issuesOfThisBook  = new LinkedList<>();
 
 

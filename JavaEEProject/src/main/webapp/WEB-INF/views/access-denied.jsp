@@ -13,10 +13,13 @@
 
 <body>
 
+
+
 <h2> Brak dostępu do strony </h2>
 
 
-<a href="${pageContext.request.contextPath}/books/getall"> Wróć do listy książek </a>
+
+<a href="${pageContext.request.contextPath}/books/getall"> Wróć do strony głównej</a>
 
 </body>
 </html>
