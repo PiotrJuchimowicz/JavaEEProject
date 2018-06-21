@@ -3,9 +3,11 @@ package com.company.project.HibernateDAO;
 import com.company.project.Factory.JpaFactory;
 import com.company.project.JpaDAO.AuthoritiesJpaDao;
 import com.company.project.Models.AuthoritiesDTO;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 
+@Component
 public class AuthoritiesHibernateDao implements AuthoritiesJpaDao {
     @Override
     public void add(AuthoritiesDTO a) {

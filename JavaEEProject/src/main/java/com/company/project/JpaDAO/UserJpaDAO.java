@@ -20,4 +20,6 @@ public interface UserJpaDAO {
     List<UserDTO> findAllUsers();
 
 
+    void updateUser(long id,String email,String username,String name);
+
 }

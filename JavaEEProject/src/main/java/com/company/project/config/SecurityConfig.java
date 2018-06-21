@@ -9,6 +9,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,6 +25,7 @@ import org.springframework.security.provisioning.UserDetailsManager;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
+import java.util.concurrent.Executor;
 import java.util.logging.Logger;
 
 @Configuration
@@ -78,16 +82,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                //.antMatchers("/books/add").hasRole("EMPLOYEE")
-                //.antMatchers("/books/remove/{id}").hasRole("EMPLOYEE")
-                //.antMatchers("/users/add").hasRole("ADMIN")
-                //.antMatchers("/books/{id}/reservation").hasRole("CLIENT")
 
                 .antMatchers("/register/registration").permitAll()
                 .antMatchers("/register/processRegistrationForm").permitAll()
                 .antMatchers("/books/getall").permitAll()
                 .antMatchers("/books/findbyid/{id}").permitAll()
-
+                .antMatchers("/employee").permitAll()
+                .antMatchers("/books/borrow/{id}").hasRole("EMPLOYEE")
+                .antMatchers("/books/remove/{id}").hasRole("EMPLOYEE")
+                .antMatchers("/books/removeconfirm/{id}").hasRole("EMPLOYEE")
+                .antMatchers("/users/removeconfirm/{id}").hasRole("EMPLOYEE")
+                .antMatchers("/users/remove/{id}").hasRole("EMPLOYEE")
+                .antMatchers("/users/payment").hasRole("EMPLOYEE")
+                .antMatchers("/users/findbyid/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
+                .antMatchers("/users/findall").hasAnyRole("ADMIN", "EMPLOYEE")
+                .antMatchers("/issues/removeconfirm/{id}").hasAnyRole("EMPLOYEE")
+                .antMatchers("/issues/remove/{id}").hasAnyRole("EMPLOYEE")
+                .antMatchers("/issues/remove/{id}").hasAnyRole("EMPLOYEE")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -153,6 +164,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return jdbcUserDetailsManager;
     }
 
+
+    @Bean
+    public TaskScheduler taskScheduler() {
+        return new ConcurrentTaskScheduler();
+    }
+
+
+    @Bean
+    public Executor taskExecutor() {
+        return new SimpleAsyncTaskExecutor();
+    }
 }
 
 

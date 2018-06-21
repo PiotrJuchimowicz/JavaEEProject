@@ -1,6 +1,7 @@
 package com.company.project;
 
 
+import com.company.project.Controllers.UsersController;
 import com.company.project.Factory.JpaFactory;
 import com.company.project.HibernateDAO.BookHibernateDAO;
 import com.company.project.JpaDAO.*;
@@ -34,13 +35,13 @@ public class TestMain {
 
         IssueJpaDAO issueJpaDAO = new IssueHibernateDAO();
         issueJpaDAO.add(issueDTO);
-
 /*
+
 
       EntityManager em = JpaFactory.getEntityManager();
         em.close();
        JpaFactory.closeEntityManagerFactory();
-
+*/
 /*
         UserDTO userDTO = new UserDTO("usteczka",1,"usteczkunik","usteczkunikis","usteczka@usteczkunikis.usti","usteczka",1250);
         UserJpaDAO userJpaDAO = new UserHibernateDAO();
@@ -52,5 +53,7 @@ public class TestMain {
 
         System.out.println(userJpaDAO.get(userDTO.getIdUser()).getAuthority().getAuthority());
   */
+
+       // System.out.println(UsersController.daysBetweenDates(LocalDateTime.now(),LocalDateTime.of(2019,6,20,0,0)));
     }
 }

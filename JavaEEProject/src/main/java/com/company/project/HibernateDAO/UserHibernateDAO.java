@@ -100,5 +100,14 @@ public class UserHibernateDAO implements UserJpaDAO {
         return list;
     }
 
+    public void updateUser(long id,String email,String surname ,String name)
+    {
+        UserDTO userDTO =  get(id);
+        userDTO.setName(name);
+        userDTO.setSurname(surname);
+        userDTO.setEmail(email);
+        update(userDTO);
+    }
+
 
 }

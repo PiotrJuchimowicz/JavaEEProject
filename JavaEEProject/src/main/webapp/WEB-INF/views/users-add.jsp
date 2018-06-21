@@ -1,17 +1,17 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: Iwona
-  Date: 10.06.2018
-  Time: 23:40
+  Date: 17.06.2018
+  Time: 22:53
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Zamówienia książki</title>
+    <title>Uzytkownik</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,11 +22,11 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 </head>
 <body>
-
-
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -45,7 +45,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
 
-                <li  ><a href="${pageContext.request.contextPath}/books/getall"> Strona główna <span
+                <li><a href="${pageContext.request.contextPath}/books/getall"> Strona główna <span
                         class="sr-only">(current)</span></a></li>
 
                 <security:authorize access="hasAnyRole('EMPLOYEE', 'ADMIN')">
@@ -114,6 +114,7 @@
 
 
 
+
 <div>
 
     <div class="container" style="margin-top: 50px;"
@@ -122,56 +123,68 @@
         <div class="panel panel-primary">
 
             <div class="panel-heading">
-                <div class="panel-title"><h3>Lista wypożyczeń</h3></div>
+                <div class="panel-title"> Nowy użytkownik </div>
             </div>
 
             <div style="padding-top: 30px" class="panel-body">
 
-
-                <c:forEach items="${issues}" var="i">
-                    <a href="<c:url value='/issues/findbyid'/>/${i.getBook().idBookToString()}"><h3>Wypożyczenie
-                        nr: ${i.getIdIssueToString()}</h3></a>
-                    <br>
-                    Data wypozyczenia : ${i.getIssueDate()}<br>
-                    Data rezerwacji : ${i.getReservationDate()}<br>
-                    Data zwrotu : ${i.getReturnDate()}<br>
-<br>
-
-                    <br>
-
-                    <div class="form-group">
-                        <div class="col-xs-15">
-                            <div>
+                <div id="container" align="center">
 
 
-                                <c:if test="${returnError != null}">
 
-                                    <div class="alert alert-danger col-xs-offset-1 col-xs-10">
-                                            ${returnError}
-                                    </div>
+                    <form:form method="POST" modelAttribute="user">
 
-                                </c:if>
+                        <label>Nazwa użytkownika</label>
+                        <form:input path="username" />
 
-                                <c:if test="${confirm != null}">
+                        <br/><br/>
 
-                                    <div class="alert alert-success col-xs-offset-1 col-xs-10">
-                                            ${confirm}
-                                    </div>
+                        <label> Imie </label>
+                        <form:input path="name" /><br/><br/>
 
-                                </c:if>
+                        <label > Nazwisko </label>
+                        <form:input path="surname" /><br/><br/>
+
+                        <label> Email </label>
+                        <form:input path="email"/><br/><br/>
 
 
+
+
+                        <div class="form-group">
+                            <div class="col-xs-15">
+                                <div>
+
+
+                                    <c:if test="${error != null}">
+
+                                        <div class="alert alert-danger col-xs-offset-1 col-xs-10">
+                                                ${error}
+                                        </div>
+
+                                        <br><br> <br>
+                                    </c:if>
+
+                                    <c:if test="${confirm != null}">
+
+                                        <div class="alert alert-success col-xs-offset-1 col-xs-10">
+                                                ${confirm}
+                                        </div>
+
+                                        <br><br> <br>
+                                    </c:if>
+
+
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <br><br> <br>
-                    <a href="<c:url value='/books/return'/>/${i.getIdIssueToString()}">Zwróć książkę </a> <br>
-                    <hr>
-                </c:forEach>
+
+                        <br/>
+                        <input type="submit" value="Zatwierdź" />
+                    </form:form>
+                </div>
 
                 <a href="${pageContext.request.contextPath}/books/getall"> Wróć do strony głównej</a>
-
-                <a href="<c:url value='/issues/findall'/>">Powrót do listy wypożyczeń</a> <br>
 
             </div>
 
@@ -180,6 +193,7 @@
     </div>
 
 </div>
+
 
 </body>
 </html>

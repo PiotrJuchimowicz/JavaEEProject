@@ -53,6 +53,9 @@
                     <li><a href="${pageContext.request.contextPath}/books/add">Dodaj książkę<span class="sr-only">(current)</span></a>
                     </li>
 
+                    <li><a href="${pageContext.request.contextPath}/users/findall">Wyświetl użytkownikow<span class="sr-only">(current)</span></a>
+                    </li>
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Wypożyczenia<span class="caret"></span></a>
@@ -66,15 +69,7 @@
                     <li><a href="${pageContext.request.contextPath}/issues/reservations">Rezerwacje<span
                             class="sr-only">(current)</span></a></li>
 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false"> Użytkownicy <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="${pageContext.request.contextPath}/users/findall">Wyświetl wszystkich</a></li>
-                            <li><a href="#">Dodaj </a></li>
 
-                        </ul>
-                    </li>
                 </security:authorize>
 
 
@@ -87,7 +82,7 @@
                        aria-expanded="false"> Użytkownik <span class="caret"></span></a>
                     <ul class="dropdown-menu">
 
-                        <security:authorize access="hasAnyRole('CLIENT', 'ADMIN', 'EMPLOOYEE')">
+                        <security:authorize access="hasAnyRole('CLIENT', 'ADMIN', 'EMPLOYEE')">
                         <li><a href="${pageContext.request.contextPath}/users/userspanel">Moje konto</a></li>
                         <li><a href="${pageContext.request.contextPath}/issues/mine">Wypożyczone książki</a></li>
                         <li><a href="${pageContext.request.contextPath}/issues/reservations/mine">Zarezerwowane książki</a></li>
@@ -98,7 +93,7 @@
 
 
                         <li>
-                        <security:authorize access="hasAnyRole('CLIENT', 'ADMIN', 'EMPLOOYEE')">
+                        <security:authorize access="hasAnyRole('CLIENT', 'ADMIN', 'EMPLOYEE')">
                             <form:form action="${pageContext.request.contextPath}/logout" method="POST">
 
                             <input CLASS="btn btn-primary" role="button" aria-pressed="true" type="submit"
@@ -132,21 +127,25 @@
             <div style="padding-top: 30px" class="panel-body">
 
 
-                <!-- tylko dla pracowników - dodawanie książki -->
-                <security:authorize access="hasRole('EMPLOYEE')">
-                    <p>
-                        <a href="${pageContext.request.contextPath}/books/add">Dodaj ksiazke</a>
-                    </p>
-                </security:authorize>
+
+                <div class="form-group">
+                    <div class="col-xs-15">
+                        <div>
+
+                            <c:if test="${error != null}">
+
+                                <div class="alert alert-danger col-xs-offset-1 col-xs-10">
+                                        ${error}
+                                </div>
+
+                            </c:if>
 
 
-                <a href="<c:url value='/books/findbycategory'/>"> Wyszukaj po kategorii</a> <br>
-                <hr>
-                <a href="<c:url value='/books/findbyauthor'/>"> Wyszukaj po autorze</a> <br>
-                <hr>
-
-                <form action="/books/title/">
-                    <input type="text" name="t" placeholder="Podaj tytuł">
+                        </div>
+                    </div>
+                </div>
+                <form action="/books/find">
+                    <input type="text" name="p" >
                     <input type="submit" value="Szukaj">
                 </form>
 
